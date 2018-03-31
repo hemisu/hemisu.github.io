@@ -1,67 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="be2e2034-b3b3-4f79-a91e-913853f7287b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/CNAME" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/100.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/11.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/15.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/24.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/32.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/33.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/35.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/39.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/40.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/41.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/43.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/45.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/46.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/47.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/49.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/5.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/50.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/52.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/53.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/54.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/56.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/58.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/6.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/63.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/64.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/67.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/68.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/69.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/70.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/71.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/73.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/74.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/75.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/76.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/77.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/78.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/79.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/82.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/83.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/84.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/85.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/86.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/87.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/88.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/89.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/9.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/90.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/93.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/94.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/97.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/98.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/99.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/_posts/start.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_config.yml" afterPath="$PROJECT_DIR$/_config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/hello-world.md" afterPath="$PROJECT_DIR$/source/_posts/hello-world.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/about/index.md" afterPath="$PROJECT_DIR$/source/about/index.md" />
-    </list>
+    <list default="true" id="be2e2034-b3b3-4f79-a91e-913853f7287b" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -407,7 +347,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8520000" />
+    <option name="totallyTimeSpent" value="8654000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1440" height="873" extended-state="6" />
