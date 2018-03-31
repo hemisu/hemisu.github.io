@@ -1,38 +1,13 @@
 ---
-title: Hello World
+title: Hello Hexo
+date: 2018-03-30 00:00:36
+categories: 生活
+tags: 
+  - 随笔
+keywords:
+description:
 ---
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
+### 搬blog 
+之前的typecho博客因为空间的原因（还有备案），还有就是想体验一下（省钱）
 
-## Quick Start
-
-### Create a new post
-
-``` bash
-$ hexo new "My New Post"
-```
-
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/deployment.html)
+文章用脚本走了一遍效果不理想，手动先搬几篇搭起来，之后改进一下脚本。。再试试
