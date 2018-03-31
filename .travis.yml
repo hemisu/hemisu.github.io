@@ -28,3 +28,8 @@ branches:
 env:
  global:
    - GIT_REF: github.com/hemisu/hemisu.github.io
+
+# .travis.yml 配置
+cache:
+ directories:
+   - node_modules
