@@ -75,9 +75,9 @@ arr3 = [
 代码
 ```js
 
-console.log(unique2(arr1));
-console.log(unique2(arr2));
-console.log(unique2(arr3));
+console.log(unique(arr1));
+console.log(unique(arr2));
+console.log(unique(arr3));
 
 function unique(arr) {
 	var result = [];
