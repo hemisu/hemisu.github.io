@@ -46,6 +46,9 @@ var arr3 = [
     },
 	},
 ];
+
+<!--more-->
+
 ```
 结果
 ```js
@@ -113,9 +116,15 @@ function isEqual(a, b) {
 		if (typeA === '[object Array]') {
 			var aLen = a.length;
 			var bLen = b.length;
+			if (a === b) return true;
 			if (aLen !== bLen) return false;
+			if (a == null || b == null) return false;
+			var newa = a.slice();
+			var newb = b.slice();
+			newa.sort();
+			newb.sort();
 			while(aLen--) {
-				if(!isEqual(a[aLen], b[aLen])) return false;
+				if(!isEqual(newa[aLen], newb[aLen])) return false;
 			}
 			return true;
 		}
