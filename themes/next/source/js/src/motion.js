@@ -78,7 +78,7 @@ $(document).ready(function () {
   sidebarToggleLines.push(sidebarToggleLine3rd);
 
   var SIDEBAR_WIDTH = '320px';
-  var SIDEBAR_DISPLAY_DURATION = 200;
+  var SIDEBAR_DISPLAY_DURATION = 10;
   var xPos, yPos;
 
   var sidebarToggleMotion = {
@@ -214,7 +214,7 @@ $(document).ready(function () {
       $brand.size() > 0 && sequence.push({
         e: $brand,
         p: {opacity: 1},
-        o: {duration: 200}
+        o: {duration: 20}
       });
 
       NexT.utils.isMist() && hasElement([$logoLineTop, $logoLineBottom]) &&
@@ -226,13 +226,13 @@ $(document).ready(function () {
       hasElement($title) && sequence.push({
         e: $title,
         p: {opacity: 1, top: 0},
-        o: { duration: 200 }
+        o: { duration: 20 }
       });
 
       hasElement($subtitle) && sequence.push({
         e: $subtitle,
         p: {opacity: 1, top: 0},
-        o: {duration: 200}
+        o: {duration: 20}
       });
 
       if (CONFIG.motion.async) {
@@ -254,7 +254,7 @@ $(document).ready(function () {
           e: $(element),
           p: {translateX: translateX},
           o: {
-            duration: 500,
+            duration: 50,
             sequenceQueue: false
           }
         };
@@ -281,7 +281,7 @@ $(document).ready(function () {
 
       $('.menu-item').velocity('transition.slideDownIn', {
         display: null,
-        duration: 200,
+        duration: 20,
         complete: function () {
           integrator.next();
         }
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
       function postMotion () {
         var postMotionOptions = window.postMotionOptions || {
-            stagger: 100,
+            stagger: 10,
             drag: true
           };
         postMotionOptions.complete = function () {
