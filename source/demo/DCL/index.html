@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function log(text) { 
+      var now = new Date();
+      console.log(
+        text,
+        now.getMinutes() + 'min' + now.getMilliseconds() + 'ms'
+      )
+    } 
+    log('initial readyState:' + document.readyState);
+  
+    document.addEventListener('readystatechange', () => log('readyState:' + document.readyState));
+    document.addEventListener('DOMContentLoaded', () => log('DOMContentLoaded'));
+  
+    window.onload = () => log('window onload');
+  </script>
+  
+  <iframe src="iframe.html" onload="log('iframe onload')"></iframe>
+  
+  <img src="http://en.js.cx/clipart/train.gif" id="img">
+  <script>
+    img.onload = () => log('img onload');
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>冒泡演示</title>
+  <style>
+    #container {
+      position: relative;
+      width: 400px;
+      height: 40px;
+      border: 1px solid black;
+      font-size: 0;
+    }
+    .square {
+      display: inline-block;
+      position: absolute;
+      margin: 5px 0 5px 5px;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      line-height: 30px;
+      text-align: center;
+      box-sizing: border-box;
+      border: 1px solid black;
+      transition: left 0.5s ease-in;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+  </div>
+  <script>
+      const testArr = Array.from({length: 10}).map(()=> Math.round(Math.random() * 10));
+      console.log(testArr);
+      function bubble(testArr) {
+        const arr = testArr.slice();
+        const operationList = [];
+        for(let i = 0; i < testArr.length; i++) {
+          for(let j = i + 1; j < testArr.length; j++) {
+            if(arr[i] > arr[j]){
+              [arr[i], arr[j]] = [arr[j], arr[i]]
+              operationList.push({
+                from: i,
+                to: j,
+                array: arr.slice(),
+              })
+            }
+          }
+        }
+        return operationList;
+      }
+      const result = bubble(testArr);
+      console.log(bubble(testArr));
+      var container = document.getElementById('container');
+      var collect = document.createDocumentFragment('div');
+      var spanList = [];
+      for(let i = 0; i < testArr.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'square';
+        span.innerText = testArr[i];
+        span.style.left = i * 40 + 'px';
+        spanList[i] = span; // 保存对某一对象的引用
+        collect.appendChild(span);
+      }
+      console.log(spanList);
+      container.appendChild(collect);
+      for(let j = 0; j < result.length; j++) { // 定时任务
+        setTimeout(function() {
+          const fromIndex = result[j].from;
+          const toIndex = result[j].to;
+          const tmp = spanList[toIndex].style.left;
+          console.log(fromIndex, toIndex, result[j].array);
+          spanList[toIndex].style.left = spanList[fromIndex].style.left;
+          spanList[fromIndex].style.left = tmp;
+          [spanList[toIndex], spanList[fromIndex]] = [spanList[fromIndex], spanList[toIndex]]
+        }, 1000 * j)//0.5秒动画 1秒延迟
+      }
+    </script>
+</body>
+</html>
