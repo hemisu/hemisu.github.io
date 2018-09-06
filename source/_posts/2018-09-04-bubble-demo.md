@@ -60,5 +60,5 @@ for(let j = 0; j < result.length; j++) { // 定时任务
 
 配合上css的transition属性，就可以做到简单的动画效果啦
 
-演示地址：![点击查看](http://www.hemisu.com/demo/sortDemo.html)
+演示地址：[点击查看](http://www.hemisu.com/demo/sortDemo.html)
 // 打开控制台 数据显示更清晰

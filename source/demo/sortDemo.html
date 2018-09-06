@@ -24,7 +24,7 @@
       text-align: center;
       box-sizing: border-box;
       border: 1px solid black;
-      transition: left 0.5s ease-in;
+      transition: left 1s ease-in;
     }
   </style>
 </head>
@@ -75,7 +75,7 @@
           spanList[toIndex].style.left = spanList[fromIndex].style.left;
           spanList[fromIndex].style.left = tmp;
           [spanList[toIndex], spanList[fromIndex]] = [spanList[fromIndex], spanList[toIndex]]
-        }, 1000 * j)//0.5秒动画 1秒延迟
+        }, 1500 * j)//0.5秒动画 1秒延迟
       }
     </script>
 </body>
