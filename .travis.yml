@@ -19,7 +19,7 @@ after_script:
   - git config user.email "hekunyu@me.com"
   - git add .
   - git commit -m "Update docs"
-  - git push --force --quiet "https://${GIT_TOKEN}@${GIT_REF}" master:gh-pages
+  - git push --force --quiet "https://${GIT_TOKEN}@${GIT_REF}" master:master
 # E: Build LifeCycle
 
 branches:
