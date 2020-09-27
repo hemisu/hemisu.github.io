@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hemisu.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="Given a pair of positive integers, for example, 6 and 110, can this equation 6 &#x3D; 110 be true? The answer is “yes”, if 6 is a decimal number and 110 is a binary number. Now for any pair of positive int">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAT A1010">
+<meta property="og:url" content="http://www.hemisu.com/2017/02/12/140/index.html">
+<meta property="og:site_name" content="何米酥&#96;s Blog">
+<meta property="og:description" content="Given a pair of positive integers, for example, 6 and 110, can this equation 6 &#x3D; 110 be true? The answer is “yes”, if 6 is a decimal number and 110 is a binary number. Now for any pair of positive int">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-02-12T14:50:15.000Z">
+<meta property="article:modified_time" content="2017-02-12T14:50:33.000Z">
+<meta property="article:author" content="何米酥">
+<meta property="article:tag" content="二分">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.hemisu.com/2017/02/12/140/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PAT A1010 | 何米酥`s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">何米酥`s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">EFE</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">何米酥</p>
+  <div class="site-description" itemprop="description">Just do...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">80</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hemisu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hemisu" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hemisu" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hemisu" rel="noopener" target="_blank"><i class="globe fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.hemisu.com/2017/02/12/140/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="何米酥">
+      <meta itemprop="description" content="Just do...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何米酥`s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PAT A1010
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2017-02-12 14:50:15 / 修改时间：14:50:33" itemprop="dateCreated datePublished" datetime="2017-02-12T14:50:15+00:00">2017-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/algorithm-PAT/" itemprop="url" rel="index"><span itemprop="name">algorithm - PAT</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Given a pair of positive integers, for example, 6 and 110, can this equation 6 = 110 be true? The answer is “yes”, if 6 is a decimal number and 110 is a binary number.</p>
+<p>Now for any pair of positive integers N1 and N2, your task is to find the radix of one number while that of the other is given.</p>
+<p>Input Specification:</p>
+<p>Each input file contains one test case. Each case occupies a line which contains 4 positive integers:<br>N1 N2 tag radix<br>Here N1 and N2 each has no more than 10 digits. A digit is less than its radix and is chosen from the set {0-9, a-z} where 0-9 represent the decimal numbers 0-9, and a-z represent the decimal numbers 10-35. The last number “radix” is the radix of N1 if “tag” is 1, or of N2 if “tag” is 2.</p>
+<p>Output Specification:</p>
+<p>For each test case, print in one line the radix of the other number so that the equation N1 = N2 is true. If the equation is impossible, print “Impossible”. If the solution is not unique, output the smallest possible radix.</p>
+<p>Sample Input 1:<br>6 110 1 10<br>Sample Output 1:<br>2<br>Sample Input 2:<br>1 ab 1 2<br>Sample Output 2:<br>Impossible<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">&#x2F;&#x2F;#include &quot;math.h&quot;</span><br><span class="line">#include &quot;string.h&quot;</span><br><span class="line">#include &quot;algorithm&quot;</span><br><span class="line">#include &quot;iostream&quot;</span><br><span class="line">using namespace std;</span><br><span class="line">typedef long long LL;</span><br><span class="line">LL Map[256];</span><br><span class="line">LL inf &#x3D; (1LL &lt;&lt; 63) - 1;&#x2F;&#x2F;long long的最大值2^63-1</span><br><span class="line">void init()&#123;</span><br><span class="line">    for (char c &#x3D; &#39;0&#39;; c &lt;&#x3D; &#39;9&#39;; c++) &#123;</span><br><span class="line">        Map[c] &#x3D; c - &#39;0&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">    for (char c &#x3D; &#39;a&#39;; c &lt;&#x3D; &#39;z&#39;; c++) &#123;</span><br><span class="line">        Map[c] &#x3D; c - &#39;a&#39; + 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">LL convertNum10(char a[], LL radix, LL t)&#123;</span><br><span class="line">    LL ans &#x3D; 0;</span><br><span class="line">    int len &#x3D; strlen(a);</span><br><span class="line">    for (int i &#x3D; 0; i &lt; len; i++) &#123;</span><br><span class="line">        ans &#x3D; ans * radix + Map[a[i]]; &#x2F;&#x2F;进制转换</span><br><span class="line">        if(ans &lt; 0 || ans &gt; t) return -1;&#x2F;&#x2F;溢出或者超过N1的十进制</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">int cmp(char N2[], LL radix,LL t)&#123;&#x2F;&#x2F;N2的十进制与t比较</span><br><span class="line">    int len &#x3D; strlen(N2);</span><br><span class="line">    LL num &#x3D; convertNum10(N2, radix, t);&#x2F;&#x2F;将N2转换为radix进制</span><br><span class="line">    if (num &lt; 0) return 1;&#x2F;&#x2F;溢出，肯定是N2 &gt; t</span><br><span class="line">    if (t &gt; num) return  -1;&#x2F;&#x2F;t较大，返回-1</span><br><span class="line">    else if(t &#x3D;&#x3D; num) return 0;&#x2F;&#x2F;相等，返回0</span><br><span class="line">    else return 1;&#x2F;&#x2F;num较大，返回1</span><br><span class="line">&#125;</span><br><span class="line">LL binarySearch(char N2[], LL left, LL right, LL t)&#123;</span><br><span class="line">    LL mid;</span><br><span class="line">    while (left &lt;&#x3D; right) &#123;</span><br><span class="line">        mid &#x3D; (left + right)&#x2F;2;</span><br><span class="line">        int flag &#x3D; cmp(N2, mid, t);</span><br><span class="line">        if (flag &#x3D;&#x3D; 0) return mid;</span><br><span class="line">        else if (flag &#x3D;&#x3D; -1) left &#x3D; mid + 1;</span><br><span class="line">        else right &#x3D; mid - 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return -1;&#x2F;&#x2F;解不存在</span><br><span class="line">&#125;</span><br><span class="line">int findLargestDigit(char N2[])&#123;</span><br><span class="line">    int ans &#x3D; -1, len &#x3D; strlen(N2);</span><br><span class="line">    for (int i &#x3D; 0; i &lt; len; i++) &#123;</span><br><span class="line">        if (Map[N2[i]] &gt; ans) &#123;</span><br><span class="line">            ans &#x3D; Map[N2[i]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans+1;</span><br><span class="line">&#125;</span><br><span class="line">char N1[20], N2[20], temp[20];</span><br><span class="line">int tag,radix;</span><br><span class="line">int main()&#123;</span><br><span class="line">    init();</span><br><span class="line">    scanf(&quot;%s %s %d %d&quot;, N1, N2, &amp;tag, &amp;radix);</span><br><span class="line">    if (tag &#x3D;&#x3D; 2) &#123;</span><br><span class="line">        strcpy(temp, N1);</span><br><span class="line">        strcpy(N1, N2);</span><br><span class="line">        strcpy(N2, temp);</span><br><span class="line">    &#125;</span><br><span class="line">    LL t &#x3D; convertNum10(N1, radix, inf);&#x2F;&#x2F;将N1从radix进制转换为十进制</span><br><span class="line">    LL low &#x3D; findLargestDigit(N2);&#x2F;&#x2F;找到N2中数位最大的位+1，当成二分下界</span><br><span class="line">    LL high &#x3D; max(low, t) + 1;&#x2F;&#x2F;上界</span><br><span class="line">    LL ans &#x3D; binarySearch(N2, low, high, t);</span><br><span class="line">    if (ans &#x3D;&#x3D; -1) printf(&quot;Impossible\n&quot;);</span><br><span class="line">    else printf(&quot;%lld\n&quot;,ans);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%88%86/" rel="tag"># 二分</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/02/11/136/" rel="prev" title="PAT B1030/A1085">
+                  <i class="fa fa-chevron-left"></i> PAT B1030/A1085
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/02/12/141/" rel="next" title="PAT A1044">
+                  PAT A1044 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">何米酥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>

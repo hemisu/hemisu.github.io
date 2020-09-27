@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hemisu.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="题目描述“万妖穴中有若干小穴，每处小穴中皆有一只恶妖。小穴外设有封印，汝需消灭指定几处小穴中的恶妖方能解除该小穴封印，进而消灭穴中恶妖。” “此处石壁所刻便是万妖穴中各穴的封印解除关系。” “万妖穴中或有部分小穴未设封印，汝可以此作为突破口。” “吾将根据石壁所示，将各穴消灭顺序给予汝，汝自珍重。” 输入每个输入文件中一组数据。 第一行两个正整数N、M（1&lt;&#x3D;N&lt;&#x3D;1000，0&lt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.1模拟题 problem2 万妖穴">
+<meta property="og:url" content="http://www.hemisu.com/2017/03/02/252/index.html">
+<meta property="og:site_name" content="何米酥&#96;s Blog">
+<meta property="og:description" content="题目描述“万妖穴中有若干小穴，每处小穴中皆有一只恶妖。小穴外设有封印，汝需消灭指定几处小穴中的恶妖方能解除该小穴封印，进而消灭穴中恶妖。” “此处石壁所刻便是万妖穴中各穴的封印解除关系。” “万妖穴中或有部分小穴未设封印，汝可以此作为突破口。” “吾将根据石壁所示，将各穴消灭顺序给予汝，汝自珍重。” 输入每个输入文件中一组数据。 第一行两个正整数N、M（1&lt;&#x3D;N&lt;&#x3D;1000，0&lt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-03-02T11:08:00.000Z">
+<meta property="article:modified_time" content="2017-03-03T16:25:50.000Z">
+<meta property="article:author" content="何米酥">
+<meta property="article:tag" content="拓扑排序">
+<meta property="article:tag" content="优先队列">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.hemisu.com/2017/03/02/252/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3.1模拟题 problem2 万妖穴 | 何米酥`s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">何米酥`s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">EFE</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">何米酥</p>
+  <div class="site-description" itemprop="description">Just do...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">80</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hemisu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hemisu" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hemisu" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hemisu" rel="noopener" target="_blank"><i class="globe fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.hemisu.com/2017/03/02/252/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="何米酥">
+      <meta itemprop="description" content="Just do...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何米酥`s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3.1模拟题 problem2 万妖穴
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-03-02 11:08:00" itemprop="dateCreated datePublished" datetime="2017-03-02T11:08:00+00:00">2017-03-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-03-03 16:25:50" itemprop="dateModified" datetime="2017-03-03T16:25:50+00:00">2017-03-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/algorithm-PAT/" itemprop="url" rel="index"><span itemprop="name">algorithm - PAT</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>题目描述</strong><br>“万妖穴中有若干小穴，每处小穴中皆有一只恶妖。小穴外设有封印，汝需消灭指定几处小穴中的恶妖方能解除该小穴封印，进而消灭穴中恶妖。”</p>
+<p>“此处石壁所刻便是万妖穴中各穴的封印解除关系。”</p>
+<p>“万妖穴中或有部分小穴未设封印，汝可以此作为突破口。”</p>
+<p>“吾将根据石壁所示，将各穴消灭顺序给予汝，汝自珍重。”</p>
+<p><strong>输入</strong><br>每个输入文件中一组数据。</p>
+<p>第一行两个正整数N、M（1&lt;=N&lt;=1000，0&lt;=M&lt;=N*(N-1)），表示万妖穴中小穴的个数及封印解除关系的条数。</p>
+<p>接下来M行，每行两个整数a、b，表示小穴b封印的解除依赖于消灭小穴a中的恶妖。假设N处小穴的编号分别是0~N-1。数据保证a不等于b，且每组封印解除关系a b最多出现一次。</p>
+<p><strong>输出</strong><br>如果能够消灭所有小穴，那么输出一行YES，并在第二行给出用空格隔开的N处小穴的消灭顺序（此处规定，总是消灭当前能消灭的编号最小的小穴）；如果不能消灭所有小穴，那么输出一行NO，并在第二行给出无法解除封印的小穴个数。行末均不允许输出多余的空格。</p>
+<p>样例输入和输出那里贴不了多个case（提交的程序会强行测试sample），所以直接放这里吧<br><strong>input:</strong></p>
+<pre><code>// case 1
+3 3
+0 1
+0 2
+2 1
+// case 2
+4 5
+0 1
+0 2
+0 3
+2 1
+1 2
+</code></pre><p><strong>output:</strong></p>
+<pre><code>// case 1
+YES
+0 2 1
+// case 2
+NO
+2
+</code></pre><p>程序如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">const int MAXV &#x3D; 1010;</span><br><span class="line">int n, m, inDegree[MAXV];</span><br><span class="line">vector&lt;int&gt; G[MAXV],Q;</span><br><span class="line">int topologicalSort()&#123;</span><br><span class="line">    int num &#x3D; 0;</span><br><span class="line">    priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt;&gt; q;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">        if (inDegree[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">            q.push(i);&#x2F;&#x2F;入度为0入队列</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    while (!q.empty()) &#123;</span><br><span class="line">        int u &#x3D; q.top();</span><br><span class="line">        Q.push_back(u);</span><br><span class="line">        q.pop();</span><br><span class="line">        for (int i &#x3D; 0; i &lt; G[u].size(); i++) &#123;</span><br><span class="line">            int v &#x3D; G[u][i];</span><br><span class="line">            inDegree[v]--;&#x2F;&#x2F;入度减少</span><br><span class="line">            if (inDegree[v] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                q.push(v);&#x2F;&#x2F;入度为0，加入队列</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        num++;</span><br><span class="line">    &#125;</span><br><span class="line">    return num;&#x2F;&#x2F;返回拓扑结点个数</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;n, &amp;m);</span><br><span class="line">    memset(inDegree, 0, sizeof(inDegree));&#x2F;&#x2F;初始化</span><br><span class="line">    int u, v;</span><br><span class="line">    for (int i &#x3D; 0 ; i &lt; m; i++) &#123;</span><br><span class="line">        scanf(&quot;%d%d&quot;, &amp;u, &amp;v);</span><br><span class="line">        G[u].push_back(v);</span><br><span class="line">        inDegree[v]++;&#x2F;&#x2F;入度++</span><br><span class="line">    &#125;</span><br><span class="line">    int topological &#x3D; topologicalSort();</span><br><span class="line">    if (topological &#x3D;&#x3D; n) &#123;&#x2F;&#x2F;封印解除！</span><br><span class="line">        printf(&quot;YES\n&quot;);</span><br><span class="line">        for (int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">            printf(&quot;%d&quot;, Q[i]);</span><br><span class="line">            if (i &lt; n - 1) &#123;</span><br><span class="line">                printf(&quot; &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        printf(&quot;NO\n%d\n&quot;, n - topological);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>题目中要求『此处规定，总是消灭当前能消灭的编号最小的小穴』<br>所以采用优先队列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; q;</span><br></pre></td></tr></table></figure><br>下面给出一组测试数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;input</span><br><span class="line"></span><br><span class="line">     6 5</span><br><span class="line">     0 1</span><br><span class="line">     0 2</span><br><span class="line">     1 5</span><br><span class="line">     1 3</span><br><span class="line">     1 4</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;output</span><br><span class="line"></span><br><span class="line">    YES</span><br><span class="line">    0 1 2 3 4 5</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/" rel="tag"># 拓扑排序</a>
+              <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag"># 优先队列</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/03/02/251/" rel="prev" title="3.1模拟题 problem3 某计算器的超电磁炮">
+                  <i class="fa fa-chevron-left"></i> 3.1模拟题 problem3 某计算器的超电磁炮
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/03/02/254/" rel="next" title="3.1模拟题 problem4 上帝视角">
+                  3.1模拟题 problem4 上帝视角 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">何米酥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>

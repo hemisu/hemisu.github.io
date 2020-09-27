@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Canvas简单的实战操作</title>
+</head>
+<style>
+body{
+  background: #3c3c3c;
+}
+.container h1 {
+  color: #fff;
+}
+
+.container{
+  width:1024px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+.nav {
+  float:left;
+  background: #eee;
+  padding: 20px;
+}
+.nav ul {
+  list-style: square;
+  padding: 0px 10px 0 30px;
+}
+.box{
+  position:relative;
+  width:800px;
+  height:600px;
+  float:left;
+}
+.board {
+    position: absolute;
+    left: 0;
+    top:0;
+    z-index: 1;
+    width: 100%;
+height:100%;
+}
+canvas{
+  width: 800px;
+  height: 600px;
+  background:#fff;
+}
+.erase{
+    border:1px solid black;
+    width: 18px;height:18px;
+    position: absolute;
+    display: none;
+}
+.selectarea{
+    width: 100px;
+    height:100px;
+    border:1px dotted black;
+    position: absolute;
+    left: 0;
+    top:0;
+    display: none;
+}
+#file_input {
+  display: none;
+}
+input[type="file"]{
+  width: 100px;
+}
+</style>
+
+<body>
+  <div class="container">
+    <h1>Canvas简单的实战操作</h1>
+    <div class="nav">
+      <ul class="draw">
+        <li data-shape="pen">画笔</li>
+        <li data-shape="line">直线</li>
+        <li data-shape="circle">圆形</li>
+        <li data-shape="rect">矩形</li>
+      </ul>
+      <ul class="operation">
+        <li data-type="select">选择</li>
+        <li data-type="word">写字</li>
+        <li data-type="addpic">添加图片<br>
+          <input type="file" id="file_input" name="img" accept="image/*" />
+        </li>
+        <li data-type="xoverturn">水平翻转画板</li>
+        <li data-type="yoverturn">垂直翻转画板</li>
+        <li data-type="erase">橡皮</li>
+        <li data-type="backout">撤销</li>
+      </ul>
+    </div>
+    <div class="box" ondrop="console.log(e)">
+        <div class="board"></div>
+        <div class="erase"></div>
+        <div class="selectarea"></div>
+        <canvas width="800" height="600"></canvas>
+    </div>
+  </div>
+  <script src="jQuery.js"></script>
+  <script>
+    var canvas = document.querySelector('canvas');
+    // 访问绘画上下文
+    var ctx = canvas.getContext('2d');
+    var box = $(".box")[0];
+    var erase = $('.erase');
+    var selectarea = $('.selectarea');
+
+    // 创建实例
+    var obj = new draw(box, canvas, ctx, erase, selectarea);
+
+    $('.draw li').on('click',function() {
+      var shape = $(this).attr("data-shape");
+      obj.shapes = shape;
+      if(obj.shapes === "pen"){
+          obj.pen();
+      }else{
+          obj.draw();
+      }
+      // console.log(shape);
+    });
+    $('.operation li').on('click',function() {
+      var type = $(this).attr("data-type");
+      if(type === 'backout') {
+        obj.backout();
+      }
+      if(type === 'erase') {
+        var w = 16;
+        var h = 16;
+        obj.erase($(".erase"), w, h);
+      }
+      if(type === 'word') {
+        // var text = prompt("内容:","请输入文字");
+        obj.text(selectarea);
+      }
+      if(type === 'select') {
+        obj.select(selectarea);
+      }
+      if(type === 'addpic') {
+        obj.seletcpicturearea(selectarea);
+      }
+      if(type === 'xoverturn'){
+        obj.xoverturn();
+      }
+      if(type === 'yoverturn'){
+        obj.yoverturn();
+      }
+    });
+    // 插入图片
+    var imginput = document.getElementById("file_input");
+
+    if (typeof window.URL === 'undefined') {
+      imginput.setAttribute('disabled', 'disabled');
+    } else {
+      imginput.addEventListener('change', function() {
+        var file = this.files[0];
+      });
+    }
+    imginput.addEventListener('change', function() {
+      var file = this.files[0];
+      img = new Image();
+      img.src = window.URL.createObjectURL(this.files[0]); //创建一个object URL，并不是你的本地路径
+      img.onload = function(e) {
+        // console.log(img.height);
+          // obj.picture(img,selectarea);
+          obj.setpicture(img,selectarea);
+          window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+      }
+      // box.appendChild(img);
+    }, false);
+
+
+
+    function draw(box, canvas, cobj, erase, selectobj){
+      this.box = box;
+      this.canvas = canvas;
+      this.width = canvas.width;
+      this.height = canvas.height;
+      this.cobj = cobj;
+      this.xobj = erase;
+      this.selectobj = selectobj;
+      this.temp = null;
+      this.tempPic = {
+        minx: 0,
+        miny: 0,
+        w: 0,
+        h: 0,
+      };
+
+      this.bgcolor = "#000";
+      this.borderColor = "#000";
+      this.borderWidth = 1;
+      this.font = "48px serif";
+
+      this.type = "stroke";//控制划线还是填充
+      this.shapes = "line";
+
+      this.history = [this.cobj.getImageData(0, 0, this.width, this.height)];
+    }
+    draw.prototype.init = function () {
+      //清除橡皮擦
+      this.xobj.css("display", "none");
+      //清除选择框
+      this.selectobj.css("display", "none");
+      ctx.textBaseline="top";
+      if (this.temp) {
+          this.history.push(this.cobj.getImageData(0, 0, this.width, this.height));
+          this.temp = null;
+      }
+      //初始化
+      this.cobj.fillStyle = this.bgcolor;
+      this.cobj.strokeStyle = this.borderColor;
+      this.cobj.lineWidth = this.borderWidth;
+      this.cobj.font = "48px serif";
+    };
+    /*
+      画笔工具
+     */
+    draw.prototype.pen = function() {
+      var that = this;
+      that.init();
+
+      this.box.onmousedown = function (e) {
+        var startx = e.offsetX;
+        var starty = e.offsetY;
+        that.init();
+        that.cobj.beginPath();
+        that.cobj.moveTo(startx, starty);
+        that.box.onmousemove = function (e) {
+          var endx = e.offsetX;
+          var endy = e.offsetY;
+          that.cobj.lineTo(endx, endy);
+          that.cobj.stroke();
+        };
+        that.box.onmouseup = function () {
+          that.cobj.closePath();
+          var data = that.cobj.getImageData(0, 0, that.width, that.height);
+          that.history.push(data);
+          that.box.onmousemove = null;
+          that.box.onmouseup = null;
+        }
+      }
+    };
+    /*
+      直线
+     */
+    draw.prototype.line = function(sx, sy, ex, ey) {
+      var that = this;
+      // that.init();
+      that.cobj.beginPath();
+      that.cobj.moveTo(sx, sy);
+      that.cobj.lineTo(ex, ey);
+      that.cobj.stroke();
+      that.cobj.closePath();
+    };
+    draw.prototype.rect = function (x, y, x1, y1) {
+      var that = this;
+      that.init();
+      that.cobj.beginPath();
+      that.cobj.rect(x, y, x1 - x, y1 - y);
+      that.cobj.closePath();
+      that.cobj[that.type]();
+    },
+    draw.prototype.circle = function (x, y, x1, y1) {
+      var that = this;
+      var r = Math.sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y))
+      that.init();
+      that.cobj.beginPath();
+      that.cobj.arc(x, y, r, 0, Math.PI * 2);//画圆
+      that.cobj.closePath();
+      that.cobj[that.type]();
+    },
+    draw.prototype.draw = function () {
+      var that = this;
+      that.box.onmousedown = function (e) {
+        var startx = e.offsetX;
+        var starty = e.offsetY;
+        that.init();
+        that.box.onmousemove = function (e) {
+          that.cobj.clearRect(0, 0, that.width, that.height);
+          if (that.history.length != 0) {
+              that.cobj.putImageData(that.history[that.history.length - 1], 0, 0);
+          }
+
+          var endx = e.offsetX;
+          var endy = e.offsetY;
+
+          that[that.shapes](startx, starty, endx, endy);//that.line()
+        };
+        that.box.onmouseup = function () {
+
+          var data = that.cobj.getImageData(0, 0, that.width, that.height);
+          that.history.push(data);
+
+          that.box.onmousemove = null;
+          that.box.onmouseup = null;
+        }
+      }
+    };
+    draw.prototype.backout = function(){
+      var that = this;
+      console.log(this.history);
+      that.cobj.clearRect(0, 0, that.width, that.height);
+      if(that.history.length === 1){
+        alert("无法撤销");
+        return;
+      }
+      // var data = that.history.pop();
+      that.cobj.putImageData(that.history[that.history.length - 2], 0, 0);
+      that.history.pop();
+      console.log('pop后'+this.history);
+
+    };
+    draw.prototype.erase = function (xobj, w, h) {
+      var that = this;
+      that.init();
+      that.box.onmousemove = function (e) {
+        var ox = e.offsetX;
+        var oy = e.offsetY;
+        xobj.css({
+            display: "block",
+            width: w,
+            height: h,
+        })
+        var left = ox - w / 2;
+        var top = oy - h / 2;
+        if (left < 0) {
+            left = 0;
+        }
+        if (left > that.width - w) {
+            left = that.width - w;
+        }
+        if (top < 0) {
+            top = 0;
+        }
+        if (top > that.height - h) {
+            top = that.height - h;
+        }
+        xobj.css({
+            left: left,
+            top: top,
+        })
+      }
+      that.box.onmousedown = function () {
+        that.init();
+        that.box.onmousemove = function (e) {
+          var ox = e.offsetX;
+          var oy = e.offsetY;
+          var left = ox - w / 2;
+          var top = oy - h / 2;
+          if (left < 0) {
+              left = 0;
+          }
+          if (left > that.width - w) {
+              left = that.width - w;
+          }
+          if (top < 0) {
+              top = 0;
+          }
+          if (top > that.height - h) {
+              top = that.height - h;
+          }
+          xobj.css({
+              left: left,
+              top: top,
+              display: "block"
+          })
+          that.cobj.clearRect(left, top, w, h);
+        }
+        that.box.onmouseup = function () {
+          xobj.css({
+              display: "none"
+          })
+          that.history.push(that.cobj.getImageData(0, 0, that.width, that.height));
+          that.box.onmousemove = null;
+          that.box.onmouseup = null;
+          that.erase(xobj, w, h);
+        }
+      }
+    };
+    draw.prototype.xoverturn = function() {
+      var that = this;
+      console.log('x翻转');
+      that.cobj.save()
+      that.cobj.translate(that.width, 0);
+      that.cobj.scale(-1, 1);
+      var imageObject = new Image();
+      imageObject.onload=function(){
+        that.history.push(that.cobj.getImageData(0, 0, that.width, that.height));
+        that.cobj.clearRect(0,0,that.width,that.height);
+        that.cobj.drawImage(imageObject,0,0);
+        that.cobj.restore();
+      }
+      imageObject.src = that.canvas.toDataURL();
+    };
+    draw.prototype.yoverturn = function() {
+      var that = this;
+      console.log('y翻转');
+      that.cobj.save();
+      that.cobj.translate(0, that.height);
+      that.cobj.scale(1, -1);
+      var imageObject = new Image();
+      imageObject.onload=function(){
+        that.history.push(that.cobj.getImageData(0, 0, that.width, that.height));
+        that.cobj.clearRect(0,0,that.width,that.height);
+        that.cobj.drawImage(imageObject,0,0);
+        that.cobj.restore();
+      }
+      imageObject.src = that.canvas.toDataURL();
+    };
+    draw.prototype.text = function(text) {
+      var that = this;
+      that.init();
+      that.box.onmousedown = function (e) {
+        var startx = e.offsetX;
+        var starty = e.offsetY;
+        var minx, miny, w, h;
+        that.init();
+        that.box.onmousemove = function (e) {
+          that.init();
+          var endx = e.offsetX;
+          var endy = e.offsetY;
+          minx = Math.min(startx, endx);
+          miny = Math.min(starty, endy);
+          w = Math.abs(endx - startx);
+          h = Math.abs(endy - starty);
+          text.css({
+              display: "block",
+              left: minx,
+              top: miny,
+              width: w,
+              height: h
+          })
+        }
+        that.box.onmouseup = function (e) {
+          that.box.onmouseup = null;
+          that.box.onmousemove = null;
+          var promptTemp = prompt("内容:","请输入文字");
+          var textcontent = (promptTemp == null)? '':promptTemp;
+          ctx.fillText(textcontent, minx, miny);
+          that.temp = that.cobj.getImageData(minx, miny, w, h);
+          that.cobj.clearRect(minx, miny, w, h)
+          that.history.push(that.cobj.getImageData(0, 0, that.width, that.height))
+          that.cobj.putImageData(that.temp, minx, miny);
+          that.drag(minx, miny, w, h, text);
+        }
+      }
+    };
+    draw.prototype.select = function (selectAreaobj) {
+      var that = this;
+      that.init();
+      that.box.onmousedown = function (e) {
+        var startx = e.offsetX;
+        var starty = e.offsetY;
+        var minx, miny, w, h;
+        that.init();
+        that.box.onmousemove = function (e) {
+          that.init();
+          var endx = e.offsetX;
+          var endy = e.offsetY;
+          minx = Math.min(startx, endx);
+          miny = Math.min(starty, endy);
+          w = Math.abs(endx - startx);
+          h = Math.abs(endy - starty);
+          selectAreaobj.css({
+              display: "block",
+              left: minx,
+              top: miny,
+              width: w,
+              height: h
+          })
+        }
+        that.box.onmouseup = function (e) {
+          that.box.onmouseup = null;
+          that.box.onmousemove = null;
+          that.temp = that.cobj.getImageData(minx, miny, w, h);
+          that.cobj.clearRect(minx, miny, w, h);
+          that.history.push(that.cobj.getImageData(0, 0, that.width, that.height));
+          that.cobj.putImageData(that.temp, minx, miny);
+          that.drag(minx, miny, w, h, selectAreaobj);
+        }
+      }
+    };
+    draw.prototype.drag = function (x, y, w, h, selectAreaobj) {
+      var that = this;
+      // 检测鼠标在范围内，添加拖拽效果
+      that.box.onmousemove = function (e) {
+          var ox = e.offsetX;
+          var oy = e.offsetY;
+          if (ox > x && ox < w + x && oy > y && oy < h + y) {
+              that.box.style.cursor = "move";
+          } else {
+              that.box.style.cursor = "default";
+          }
+      }
+      that.box.onmousedown = function (e) {
+        var ox = e.offsetX;
+        var oy = e.offsetY;
+        //鼠标相对于div左上角的位置
+        var cx = ox - x;
+        var cy = oy - y;
+        if (ox > x && ox < w + x && oy > y && oy < h + y) {
+            that.box.style.cursor = "move";
+        } else {
+            that.box.style.cursor = "default";
+            return;
+        }
+        that.box.onmousemove = function (e) {
+            that.cobj.clearRect(0, 0, that.width, that.height);
+            if (that.history.length != 0) {
+                that.cobj.putImageData(that.history[that.history.length - 1], 0, 0)
+            }
+            var endx = e.offsetX;
+            var endy = e.offsetY;
+            var left = endx - cx;
+            var top = endy - cy;
+            if(left<0){
+                left=0;
+            }
+            if(left>that.width-w){
+                left=that.width-w
+            }
+
+            if(top<0){
+                top=0;
+            }
+            if(top>that.height-h){
+                top=that.height-h
+            }
+            selectAreaobj.css({
+                left: left,
+                top: top,
+            })
+            x=left;
+            y=top;
+            that.cobj.putImageData(that.temp, left, top);
+        }
+        that.box.onmouseup = function () {
+            that.box.onmouseup = null;
+            that.box.onmousemove = null;
+            that.drag(x, y, w, h, selectAreaobj)
+        }
+      }
+    };
+    draw.prototype.seletcpicturearea = function (selectAreaobj) {
+      var that = this;
+      that.init();
+      that.box.onmousedown = function (e) {
+        var startx = e.offsetX;
+        var starty = e.offsetY;
+        var minx, miny, w, h;
+        that.init();
+        that.box.onmousemove = function (e) {
+          that.init();
+          var endx = e.offsetX;
+          var endy = e.offsetY;
+          minx = Math.min(startx, endx);
+          miny = Math.min(starty, endy);
+          w = Math.abs(endx - startx);
+          h = Math.abs(endy - starty);
+          selectAreaobj.css({
+              display: "block",
+              left: minx,
+              top: miny,
+              width: w,
+              height: h
+          })
+        }
+        that.box.onmouseup = function (e) {
+          that.box.onmouseup = null;
+          that.box.onmousemove = null;
+          that.tempPic = {
+            minx: minx,
+            miny: miny,
+            w: w,
+            h: h,
+          };
+          imginput.click();
+          //
+        }
+      }
+    };
+    draw.prototype.setpicture = function(img, selectAreaobj) {
+      var that = this;
+      var minx = that.tempPic.minx,
+        miny = that.tempPic.miny,
+        w = that.tempPic.w,
+        h = that.tempPic.h,
+        picw,
+        pich;
+      if(w/img.width<=h/img.height)
+      {
+        picw=img.width*(w/img.width);
+        pich=img.height*(w/img.width);
+      }else{
+        picw=img.width*(h/img.height);
+        pich=img.height*(h/img.height);
+      }
+      // console.log(img.width);
+      // console.log(img.height);
+      // console.log(picw);
+      // console.log(pich);
+      that.cobj.drawImage(img,minx,miny,picw,pich);
+      that.temp = that.cobj.getImageData(minx, miny, w, h);
+      that.cobj.clearRect(minx, miny, w, h);
+      that.history.push(that.cobj.getImageData(0, 0, that.width, that.height));
+      that.cobj.putImageData(that.temp, minx, miny);
+      that.drag(minx, miny, w, h, selectAreaobj);
+
+    }
+
+
+  </script>
+</body>
+</html>

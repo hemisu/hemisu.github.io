@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hemisu.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="[TOC] 本章内容 理解浏览器报告的错误 处理错误 调试JavaScript代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js高程读书笔记 第17章 错误处理与调试">
+<meta property="og:url" content="http://www.hemisu.com/2017/09/02/303/index.html">
+<meta property="og:site_name" content="何米酥&#96;s Blog">
+<meta property="og:description" content="[TOC] 本章内容 理解浏览器报告的错误 处理错误 调试JavaScript代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-09-02T21:11:00.000Z">
+<meta property="article:modified_time" content="2017-09-08T15:57:02.000Z">
+<meta property="article:author" content="何米酥">
+<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="js高程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.hemisu.com/2017/09/02/303/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js高程读书笔记 第17章 错误处理与调试 | 何米酥`s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">何米酥`s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">EFE</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E7%AB%A0%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">本章内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#try-catch%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.</span> <span class="nav-text">try-catch语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AF"><span class="nav-number">2.2.</span> <span class="nav-text">抛出错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">错误事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%94%99%E8%AF%AF%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">常见的错误类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%86%E8%87%B4%E5%91%BD%E9%94%99%E8%AF%AF%E5%92%8C%E9%9D%9E%E8%87%B4%E5%91%BD%E9%94%99%E8%AF%AF"><span class="nav-number">2.5.</span> <span class="nav-text">区分致命错误和非致命错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.6.</span> <span class="nav-text">把错误记录到服务器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">调试技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%B6%88%E6%81%AF%E8%AE%B0%E5%BD%95%E5%88%B0%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">3.1.</span> <span class="nav-text">将消息记录到控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%B6%88%E6%81%AF%E8%AE%B0%E5%BD%95%E5%88%B0%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">将消息记录到当前页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AF-1"><span class="nav-number">3.3.</span> <span class="nav-text">抛出错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84IE%E9%94%99%E8%AF%AF"><span class="nav-number">4.</span> <span class="nav-text">常见的IE错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%BB%88%E6%AD%A2-operation-aborted"><span class="nav-number">4.1.</span> <span class="nav-text">操作终止 operation aborted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E7%9F%A5%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF"><span class="nav-number">4.2.</span> <span class="nav-text">未知运行时错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">何米酥</p>
+  <div class="site-description" itemprop="description">Just do...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">80</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hemisu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hemisu" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hemisu" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hemisu" rel="noopener" target="_blank"><i class="globe fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.hemisu.com/2017/09/02/303/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="何米酥">
+      <meta itemprop="description" content="Just do...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何米酥`s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js高程读书笔记 第17章 错误处理与调试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-09-02 21:11:00" itemprop="dateCreated datePublished" datetime="2017-09-02T21:11:00+00:00">2017-09-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-09-08 15:57:02" itemprop="dateModified" datetime="2017-09-08T15:57:02+00:00">2017-09-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[TOC]</p>
+<h1 id="本章内容"><a href="#本章内容" class="headerlink" title="本章内容"></a>本章内容</h1><ul>
+<li>理解浏览器报告的错误</li>
+<li>处理错误</li>
+<li>调试JavaScript代码<a id="more"></a>
+<h1 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h1><h2 id="try-catch语句"><a href="#try-catch语句" class="headerlink" title="try-catch语句"></a>try-catch语句</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//可能会导致错误的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">    <span class="comment">//在错误发生时怎么处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+catch块会接收到一个而包含错误信息的对象，即使不想使用这个错误对象，也要给它起名字。这个对象中包含的实际信息会因浏览器而异，共同点是有一个保存着错误消息的message属性。</li>
+</ul>
+<p>ECMA-262规定了这个错误类型的name属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="built_in">window</span>.someNonexistentFunction();</span><br><span class="line">&#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>finally子句<br>finally子句一经使用，其代码无论如何都会执行。</p>
+</li>
+<li><p>错误类型</p>
+</li>
+</ol>
+<ul>
+<li>Error</li>
+<li>EvalError</li>
+<li>RangeError</li>
+<li>ReferenceError</li>
+<li>SyntaxError</li>
+<li>TypeError</li>
+<li>URIError</li>
+</ul>
+<h2 id="抛出错误"><a href="#抛出错误" class="headerlink" title="抛出错误"></a>抛出错误</h2><p>throw操作符，用于随时抛出自定义错误。</p>
+<p>在遇到throw操作符时，代码会立即停止执行。仅当有try-catch语句捕获到被抛出的值时，代码才会继续执行。</p>
+<p>在创建自定义错误消息时最常用的错误类型是Error、RangeEroor、ReferenceError和TypeError。</p>
+<p>此时，需要为新创建的错误类型指定name和message属性。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomError</span>(<span class="params">message</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.name = <span class="string">&quot;CustomError&quot;</span>;</span><br><span class="line">    <span class="built_in">this</span>.message = message;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CustomError.prototype = <span class="keyword">new</span> <span class="built_in">Error</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> CustomError(<span class="string">&quot;My message&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h2 id="错误事件"><a href="#错误事件" class="headerlink" title="错误事件"></a>错误事件</h2><p>任何没有通过try-catch处理的错误都会出发window对象的error事件。onerror事件处理程序可以接受三个参数：错误消息、错误所在的URL和行号。</p>
+<p>图像也支持error事件。只要图像的src特性中的URL不能返回可以被识别的图像格式，就会触发error事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> image= <span class="keyword">new</span> Image();</span><br><span class="line">EventUtil.addHandler(image, <span class="string">&quot;load&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;<span class="comment">//addEventListener</span></span><br><span class="line">    alert(<span class="string">&quot;Image loaded!&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">EventUtil.addHandler(image, <span class="string">&quot;error&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">&quot;Image not loaded!&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">image.src = <span class="string">&quot;smilex.gif&quot;</span>;<span class="comment">//指定不存在的文件。</span></span><br></pre></td></tr></table></figure>
+<h2 id="常见的错误类型"><a href="#常见的错误类型" class="headerlink" title="常见的错误类型"></a>常见的错误类型</h2><ul>
+<li>类型转换错误</li>
+<li>数据类型错误</li>
+<li>通信错误</li>
+</ul>
+<p>关于数据类型错误，大体上来说，基本类型的值应该使用typeof来洁厕，而对象的值应该使用instanceof来检测。</p>
+<p>通信错误一般会出现在Ajax编程中，URL通信调用encodeURIComponent()对象对数据进行编码。</p>
+<h2 id="区分致命错误和非致命错误"><a href="#区分致命错误和非致命错误" class="headerlink" title="区分致命错误和非致命错误"></a>区分致命错误和非致命错误</h2><p>对于致命错误，例如<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = mods.length; i &lt; len; i++)&#123;</span><br><span class="line">    mods[i].init();<span class="comment">//可能会导致致命错误</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//下列代码可以将所有模块的错误编程非致命的</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = mods.length; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        mods[i].init();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="comment">//在这处理错误</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="把错误记录到服务器"><a href="#把错误记录到服务器" class="headerlink" title="把错误记录到服务器"></a>把错误记录到服务器</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logError</span>(<span class="params">sev, msg</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">    img.src = <span class="string">&quot;log.php?sev=&quot;</span> + <span class="built_in">encodeURIComponent</span>(sev) + <span class="string">&quot;&amp;msg=&quot;</span> + <span class="built_in">encodeURIComponent</span>(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里使用了Image对象来发送请求，这样做非常灵活</p>
+<ul>
+<li>所有浏览器都支持Image对象，包括哪些不支持XMLHttpRequest对象的浏览器。</li>
+<li>可以避免跨域限制。</li>
+<li>在记录错误的过程中出问题的概率比较低。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, len = mods.length; i &lt; len ; i++) &#123;</span><br><span class="line">   <span class="keyword">try</span>&#123;</span><br><span class="line">       mods[i].init();</span><br><span class="line">   &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">       logError(<span class="string">&quot;nonfatal&quot;</span>, <span class="string">&quot;Module init failed: &quot;</span> + e.message);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="调试技术"><a href="#调试技术" class="headerlink" title="调试技术"></a>调试技术</h1><h2 id="将消息记录到控制台"><a href="#将消息记录到控制台" class="headerlink" title="将消息记录到控制台"></a>将消息记录到控制台</h2><p>通过console对象向JavaScript控制台写入信息。</p>
+<ul>
+<li>error</li>
+<li>info</li>
+<li>log</li>
+<li>warn</li>
+</ul>
+<h2 id="将消息记录到当前页面"><a href="#将消息记录到当前页面" class="headerlink" title="将消息记录到当前页面"></a>将消息记录到当前页面</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">message</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">console</span> = <span class="built_in">document</span>.getElementById(<span class="string">&quot;debuginfo&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(consile ===<span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span> = <span class="built_in">document</span>.createElement(<span class="string">&quot;div&quot;</span>);</span><br><span class="line">        <span class="built_in">console</span>.id = <span class="string">&quot;debuginfo&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.background = <span class="string">&quot;#dedede&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.border = <span class="string">&quot;1px solid silver&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.padding = <span class="string">&quot;5px&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.width = <span class="string">&quot;400px&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.position = <span class="string">&quot;absolute&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.right = <span class="string">&quot;0px&quot;</span>;</span><br><span class="line">        <span class="built_in">console</span>.style.top = <span class="string">&quot;0px&quot;</span>;</span><br><span class="line">        <span class="built_in">document</span>.body.appendChild(<span class="built_in">console</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.innerHTML += <span class="string">&quot;&lt;p&gt;&quot;</span> + message + <span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="抛出错误-1"><a href="#抛出错误-1" class="headerlink" title="抛出错误"></a>抛出错误</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assert</span>(<span class="params">condition, message</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!condition) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="常见的IE错误"><a href="#常见的IE错误" class="headerlink" title="常见的IE错误"></a>常见的IE错误</h1><h2 id="操作终止-operation-aborted"><a href="#操作终止-operation-aborted" class="headerlink" title="操作终止 operation aborted"></a>操作终止 operation aborted</h2><h2 id="未知运行时错误"><a href="#未知运行时错误" class="headerlink" title="未知运行时错误"></a>未知运行时错误</h2><p>span标签不能包含div之类的块级元素</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>在可能发生错误的地方使用try-catch语句，这样有机会以适当的方式对错误给出响应。</li>
+<li>使用window.onerror事件处理程序，这种方式可以接受try-catch不能处理的所有错误</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
+              <a href="/tags/js%E9%AB%98%E7%A8%8B/" rel="tag"># js高程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/08/17/302/" rel="prev" title="js高程读书笔记 第13章 事件">
+                  <i class="fa fa-chevron-left"></i> js高程读书笔记 第13章 事件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/09/06/306/" rel="next" title="js高程读书笔记 第20章 JSON">
+                  js高程读书笔记 第20章 JSON <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">何米酥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>

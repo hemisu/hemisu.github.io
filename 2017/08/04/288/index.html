@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hemisu.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="[TOC] 本章内容 使用对象 创建并操作数组 理解基本的javasrcipt类型 使用基本类型和基本包装类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js高程读书笔记 第五章 引用类型">
+<meta property="og:url" content="http://www.hemisu.com/2017/08/04/288/index.html">
+<meta property="og:site_name" content="何米酥&#96;s Blog">
+<meta property="og:description" content="[TOC] 本章内容 使用对象 创建并操作数组 理解基本的javasrcipt类型 使用基本类型和基本包装类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-08-04T15:10:00.000Z">
+<meta property="article:modified_time" content="2017-08-13T15:56:56.000Z">
+<meta property="article:author" content="何米酥">
+<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="js高程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.hemisu.com/2017/08/04/288/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>js高程读书笔记 第五章 引用类型 | 何米酥`s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">何米酥`s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">EFE</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E7%AB%A0%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">本章内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#object%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">object类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Array%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">Array类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E6%95%B0%E7%BB%84"><span class="nav-number">3.1.</span> <span class="nav-text">检测数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">转换方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">栈方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E6%96%B9%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">队列方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text">重排序方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">3.6.</span> <span class="nav-text">操作方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.7.</span> <span class="nav-text">位置方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%96%B9%E6%B3%95"><span class="nav-number">3.8.</span> <span class="nav-text">迭代方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%96%B9%E6%B3%95"><span class="nav-number">3.9.</span> <span class="nav-text">归并方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">Date类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">继承方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">日期格式化方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RegExp%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">RegExp类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RegExp%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text">RegExp实例属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RegExp%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">RegExp实例方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RegExp%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%B1%9E%E6%80%A7"><span class="nav-number">5.3.</span> <span class="nav-text">RegExp构造函数属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Function%E7%B1%BB%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">Function类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89%E9%87%8D%E8%BD%BD"><span class="nav-number">6.1.</span> <span class="nav-text">没有重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%92%8C%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text">函数声明和函数表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E5%80%BC%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">6.3.</span> <span class="nav-text">作为值的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E5%B1%9E%E6%80%A7"><span class="nav-number">6.4.</span> <span class="nav-text">函数内部属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95"><span class="nav-number">6.4.1.</span> <span class="nav-text">函数属性和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">6.4.1.1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">6.4.1.2.</span> <span class="nav-text">方法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">基本包装类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Boolean%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.1.</span> <span class="nav-text">Boolean类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Number%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.1.1.</span> <span class="nav-text">Number类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.1.2.</span> <span class="nav-text">String类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BD%93%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.</span> <span class="nav-text">单体内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Global%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.1.</span> <span class="nav-text">Global对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URI%E7%BC%96%E7%A0%81%E6%96%B9%E6%B3%95"><span class="nav-number">8.1.1.</span> <span class="nav-text">URI编码方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eval-%E6%96%B9%E6%B3%95"><span class="nav-number">8.1.2.</span> <span class="nav-text">eval()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Global%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">8.1.3.</span> <span class="nav-text">Global对象的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#window%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.1.4.</span> <span class="nav-text">window对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Math%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.2.</span> <span class="nav-text">Math对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">何米酥</p>
+  <div class="site-description" itemprop="description">Just do...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">80</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hemisu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hemisu" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hemisu" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hemisu" rel="noopener" target="_blank"><i class="globe fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.hemisu.com/2017/08/04/288/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="何米酥">
+      <meta itemprop="description" content="Just do...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="何米酥`s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js高程读书笔记 第五章 引用类型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-08-04 15:10:00" itemprop="dateCreated datePublished" datetime="2017-08-04T15:10:00+00:00">2017-08-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2017-08-13 15:56:56" itemprop="dateModified" datetime="2017-08-13T15:56:56+00:00">2017-08-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[TOC]</p>
+<h1 id="本章内容"><a href="#本章内容" class="headerlink" title="本章内容"></a>本章内容</h1><ul>
+<li>使用对象</li>
+<li>创建并操作数组</li>
+<li>理解基本的javasrcipt类型</li>
+<li>使用基本类型和基本包装类型</li>
+</ul>
+<a id="more"></a>
+<p>引用类型是一种数据结构，用于将数据和功能组织在一起。<br>对象是某个特定引用类型的实例。</p>
+<h1 id="object类型"><a href="#object类型" class="headerlink" title="object类型"></a>object类型</h1><p>创建object实例的方式有两种。</p>
+<ol>
+<li>用new操作符后跟object构造函数<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">person.name = <span class="string">&quot;Hemisu&quot;</span>;</span><br><span class="line">person.age = <span class="number">24</span>;</span><br></pre></td></tr></table></figure></li>
+<li>对象字面量表示法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name : <span class="string">&#x27;nicholas&#x27;</span>,</span><br><span class="line">    age : <span class="number">24</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+访问对象属性可以用点表示法和方括号表示法来访问对象的属性。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(person[<span class="string">&quot;name&quot;</span>]);</span><br><span class="line">alert(person.name);</span><br></pre></td></tr></table></figure>
+方括号语法可以通过变量来访问属性<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> propertyName = <span class="string">&quot;name&quot;</span>;</span><br><span class="line">alert(pserson[propertyName]);</span><br></pre></td></tr></table></figure>
+推荐使用点表示法<h1 id="Array类型"><a href="#Array类型" class="headerlink" title="Array类型"></a>Array类型</h1>ECMAScript数组的每一项可以保存任何类型的数据。<br>创建数组的基本方法有两种。</li>
+<li>使用Array构造函数。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br></pre></td></tr></table></figure></li>
+<li>数组字面量表示法。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> names = [];<span class="comment">//空数组</span></span><br></pre></td></tr></table></figure>
+数组的项数保存在lenth属性中，这个属性始终会返回0或者更大的值，可以通过设置这个属性，从数组的末尾移除项或向数组中添加新项。<h2 id="检测数组"><a href="#检测数组" class="headerlink" title="检测数组"></a>检测数组</h2>使用instanceof操作符：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (value <span class="keyword">instanceof</span> <span class="built_in">Array</span>)&#123;</span><br><span class="line">    <span class="comment">//对数组进行操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+问题在于，它假定只有一个全局执行环境。如果网页种包含多个框架，实际上就存在两个以上不同的全局执行环境。从而存在两个以上不同版本的Array构造函数。</li>
+</ol>
+<p>为了解决这个问题，ECMAScript 5新增Array.isArray()方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value))&#123;</span><br><span class="line">    <span class="comment">//对数组执行某些操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="转换方法"><a href="#转换方法" class="headerlink" title="转换方法"></a>转换方法</h2><p>所有对象都具有toLocalString()、toString()和valueOf()方法。</p>
+<p>数组继承的toLocalString()、toString()和valueOf()方法，在默认情况下都会以逗号分隔的字符串形式返回数组项。用join()方法可以使用不同的分隔符来构建这个字符串。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>, <span class="string">&quot;blue&quot;</span>];</span><br><span class="line">alert(colors.join(<span class="string">&quot;,&quot;</span>));</span><br><span class="line">alert(colors.join(<span class="string">&quot;||&quot;</span>));</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果数组中某项的值是null或者undefined，那么该值在toLocalString()、toString()、valueOf()和join()方法返回的结果中以空字符串表示。</p>
+</blockquote>
+<h2 id="栈方法"><a href="#栈方法" class="headerlink" title="栈方法"></a>栈方法</h2><p>push()方法可以接收任意数量的参数，把它们逐个添加到数组末尾，并返回修改后数组的长度。<br>pop()方法则从数组末尾移除最后一项，减少数组的lenth值，然后返回移除的项。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>();       <span class="comment">//创建一个数组</span></span><br><span class="line"><span class="keyword">var</span> count = colors.push(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);<span class="comment">//推入两项</span></span><br><span class="line">alert(count);                   <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">count = colors.push(<span class="string">&quot;black&quot;</span>);</span><br><span class="line">alert(count);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> item = colors.pop();        <span class="comment">//取得最后一项</span></span><br><span class="line">alert(item);                    <span class="comment">//black</span></span><br><span class="line">alert(color.length);            <span class="comment">//2</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="队列方法"><a href="#队列方法" class="headerlink" title="队列方法"></a>队列方法</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>();       <span class="comment">//创建一个数组</span></span><br><span class="line"><span class="keyword">var</span> count = colors.push(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);<span class="comment">//推入两项</span></span><br><span class="line">alert(count);                   <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">count = colors.push(<span class="string">&quot;black&quot;</span>);</span><br><span class="line">alert(count);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> item = color.shift();       <span class="comment">//取得第一项</span></span><br><span class="line">alert(item);                    <span class="comment">//red</span></span><br><span class="line">alert(colors.length);           <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+<p>unshift()的用途与shift()的用途相反，它能在数组前端添加任意个项并返回新数组的长度。</p>
+<h2 id="重排序方法"><a href="#重排序方法" class="headerlink" title="重排序方法"></a>重排序方法</h2><p>数组中存在两个可以用来重排序的方法：reverse()和sort()</p>
+<p>如果直接使用sort来排序，sort会调用每个数组项的toString()转型，比较的是字符串。于是会出现如下情况：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>];</span><br><span class="line">values.sort();</span><br><span class="line">alert(values);<span class="comment">//0,1,10,15,5</span></span><br></pre></td></tr></table></figure><br>为了解决这种情况，sort()方法可以接收一个比较函数，一边指定哪个值位于哪个值的前面。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span>(<span class="params">value1, value2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value1 &lt; value2)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1 &gt; value2)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span> , <span class="number">10</span>, <span class="number">15</span>];</span><br><span class="line">values.sort(compare);</span><br><span class="line">alert(values);  <span class="comment">//0,1,5,10,15</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="操作方法"><a href="#操作方法" class="headerlink" title="操作方法"></a>操作方法</h2><p>concat()方法可以基于当前数组种的所有项创建一个新数组。这方法会先创建当前数组的一个副本，然后将接收到的参数添加到这个副本的末尾，最后返回新构建的数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>, <span class="string">&quot;blue&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> colors2 = colors.concat(<span class="string">&quot;yello&quot;</span>, [<span class="string">&quot;black&quot;</span>, <span class="string">&quot;brown&quot;</span>]);</span><br><span class="line"></span><br><span class="line">alert(colors);      <span class="comment">//red,green,blue</span></span><br><span class="line">alert(colors2);     <span class="comment">//red,green,blue,yellow,black,brown</span></span><br></pre></td></tr></table></figure><br>slice()方法能够基于当前数组种的一个或多个热项创建一个新书组。slice()方法可以接收一或两个参数，即要返回项的起始和结束位置。slice方法不会影响原始数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;yellow&quot;</span>, <span class="string">&quot;purple&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> colors2 = colors.slice(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> colors3 = colors.slice(<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">alert(colors2);     <span class="comment">//green,blue,yellow,purple</span></span><br><span class="line">alert(colors3);</span><br><span class="line"><span class="comment">//green,blue,yellow</span></span><br></pre></td></tr></table></figure><br>如果slice()方法的参数种有一个负数，则用数组长度加上该数来确定相应的位置。长度5的数组调用slice(-2,-1)等于slice(3,4)。</p>
+<p>splice()方法</p>
+<ul>
+<li>删除</li>
+</ul>
+<p>可以删除任意数量的项，只需指定2个参数：要删除的第一项的位置和要删除的项数。</p>
+<ul>
+<li>插入</li>
+</ul>
+<p>可以向指定位置插入任意数量的项，只需提供3个参数：起始位置、0（要删除的项）和要插入的项。如果要插入多个项，可以再传入第四、第五以致任意多项。</p>
+<ul>
+<li>替换</li>
+</ul>
+<p>可以同时指定删除和替换。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>, <span class="string">&quot;blue&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> removed = colors.splice(<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">alert(colors);<span class="comment">//green,blue</span></span><br><span class="line">alert(removed);<span class="comment">//red</span></span><br><span class="line"></span><br><span class="line">removed = colors.splice(<span class="number">1</span>,<span class="number">0</span>,<span class="string">&quot;yellow&quot;</span>, <span class="string">&quot;orange&quot;</span>);</span><br><span class="line">alert(colors);<span class="comment">//green,yellow,orange,blue</span></span><br><span class="line">alert(removed);<span class="comment">//[]</span></span><br><span class="line"></span><br><span class="line">removed = colors.splice(<span class="number">1</span>,<span class="number">1</span>,<span class="string">&quot;red&quot;</span>, <span class="string">&quot;purple&quot;</span>);</span><br><span class="line">alert(colors);<span class="comment">//green,red,purple,orange,blue</span></span><br><span class="line">alert(removed);<span class="comment">//yellow</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="位置方法"><a href="#位置方法" class="headerlink" title="位置方法"></a>位置方法</h2><p>indexOf()和lastIndexOf()</p>
+<p>接收两个参数：要查找的项和（可选的）表示查找起点的位置。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line">alert(numbers.indexOf(<span class="number">4</span>));<span class="comment">//3</span></span><br><span class="line">alert(numbers.lastIndexOf(<span class="number">4</span>));<span class="comment">//5</span></span><br><span class="line"></span><br><span class="line">alert(numbers.indexOf(<span class="number">4</span>, <span class="number">4</span>));<span class="comment">//5,从4号位置开始找4</span></span><br><span class="line">alert(numbers.lastIndexOf(<span class="number">4</span>, <span class="number">4</span>));<span class="comment">//3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">&quot;Nicholas&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> people = [&#123; <span class="attr">name</span>: <span class="string">&quot;Nicholas&quot;</span>&#125;];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> morePeople = [person];</span><br><span class="line"></span><br><span class="line">alert(people.indexOf(person));<span class="comment">//-1</span></span><br><span class="line">alert(morePeople.indexOf(person));<span class="comment">//0</span></span><br></pre></td></tr></table></figure>
+<h2 id="迭代方法"><a href="#迭代方法" class="headerlink" title="迭代方法"></a>迭代方法</h2><p>ECMAScript为数组定义了5个迭代方法。每个方法都会接收两个参数：要在每一项上运行的函数和（可选）运行该函数的作用域对象——影响this的值。</p>
+<p>传入这些方法中的函数会接收三个参数：<br>数组项的值、该项在数组中的位置和数组对象本身。</p>
+<ul>
+<li>every(): 对数组中的每一项运行给定函数，如果该函数对每一项都返回true，则返回true。</li>
+<li>filter(): 对数组中的每一项运行给定函数，返回该函数会返回的true的项组成的数组。</li>
+<li>forEach(): 对数组中的每一项运行给定函数。没有返回值</li>
+<li>map(): 对数组中的每一项运行给定函数，返回每次函数调用的结果组成的数组。</li>
+<li>some(): 对数组中的每一项运行给定函数，如果函数对任一项返回true，则返回true。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"><span class="keyword">var</span> everyResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(everyResult);<span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> someResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(someResult);<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> filterResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(filterResult);<span class="comment">//[3,4,5,4,3]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mapResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item * <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(mapResult);<span class="comment">//[2,4,6,8,10,8,6,4,2]</span></span><br></pre></td></tr></table></figure>
+<h2 id="归并方法"><a href="#归并方法" class="headerlink" title="归并方法"></a>归并方法</h2><p>reduce()和reduceRight()</p>
+<p>接收两个参数：一个在每一项上调用的函数和（可选的）作为归并基础的初始值。传给reduce()和reduceRight()的函数接收4个参数：前一个值、当前值、项的索引和数组对象。这个函数返回的任何值都会作为第二个参数自动传给下一项。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line"><span class="keyword">var</span> sum = values.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">prev, cur, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prev + cur;</span><br><span class="line">&#125;);</span><br><span class="line">alert(sum);<span class="comment">//15</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Date类型"><a href="#Date类型" class="headerlink" title="Date类型"></a>Date类型</h1><p>创建一个日期对象，使用new操作符和Date构造函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br></pre></td></tr></table></figure><br>Date.parse()方法接收一个表示日期的字符串参数。</p>
+<p>Date.UTC()的参数分别是年、<strong>基于0的月份</strong>，天，小时，分钟，秒及毫秒。</p>
+<p>Date()构造函数模仿Date.UTC(),区别是Date()基于本地时区而非GMT来创建。</p>
+<h2 id="继承方法"><a href="#继承方法" class="headerlink" title="继承方法"></a>继承方法</h2><p>tiKicakString()、toString()和valueOf()</p>
+<h2 id="日期格式化方法"><a href="#日期格式化方法" class="headerlink" title="日期格式化方法"></a>日期格式化方法</h2><p>推荐使用toUTCString()方法</p>
+<h1 id="RegExp类型"><a href="#RegExp类型" class="headerlink" title="RegExp类型"></a>RegExp类型</h1><p>ECMAScript通过RegExp类型来支持正则表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var expression &#x3D; &#x2F; pattern &#x2F; flags;</span><br></pre></td></tr></table></figure><br>flags：</p>
+<ul>
+<li>g 表示全局模式，应用于所有字符串，而非在发现第一个匹配项时立即停止；</li>
+<li>i 表示不区分大小写(case-insensitive)模式</li>
+<li>m 表示多行模式，即在到达一行文本末尾时还会继续查找下一行种是否存在与模式匹配的值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 匹配字符串种所有&quot;at&quot;的实例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> pattern1 = <span class="regexp">/at/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 匹配第一个&quot;bat&quot;或&quot;cat&quot;，不区分大小写</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> pattern2 = <span class="regexp">/[bc]cat/i</span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 匹配所有以&quot;at&quot;结尾的3个字符的组合，不区分大小写</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> pattern3 = <span class="regexp">/.at/gi</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="RegExp实例属性"><a href="#RegExp实例属性" class="headerlink" title="RegExp实例属性"></a>RegExp实例属性</h2><ul>
+<li>global:布尔值，表示是否设置了g标志</li>
+<li>ignoreCase:布尔值，表示是否设置了i标志</li>
+<li>lastIndex:整数，表示开始搜索下一个匹配项的字符位置，从0算起</li>
+<li>multiline:布尔值，表示是否设置了m标志。</li>
+<li>source：正则表达式的字符串表示。</li>
+</ul>
+<h2 id="RegExp实例方法"><a href="#RegExp实例方法" class="headerlink" title="RegExp实例方法"></a>RegExp实例方法</h2><p>exec()接收一个参数，即要应用模式的字符串，饭后返回包含第一个匹配项信息的数组；或者在没有匹配项的情况下返回null。</p>
+<p>对于exec()方法而言，即使在模式中设置了g，每次也只会返回一个匹配项。如果设置了g，可以多次调用exec()。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">&quot;cat, bat, sat, fat&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> pattern1 = <span class="regexp">/.at/</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> matches = pattern1.exec(text);</span><br><span class="line">alert(matches.index);   <span class="comment">//0</span></span><br><span class="line">alert(matches[<span class="number">0</span>]);      <span class="comment">//cat</span></span><br><span class="line">alert(matches.lastIndex);<span class="comment">//0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> matches = pattern1.exec(text);</span><br><span class="line">alert(matches.index);   <span class="comment">//0</span></span><br><span class="line">alert(matches[<span class="number">0</span>]);      <span class="comment">//cat</span></span><br><span class="line">alert(matches.lastIndex);<span class="comment">//0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pattern2 = <span class="regexp">/.at/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> matches = pattern2.exec(text);</span><br><span class="line">alert(matches.index);   <span class="comment">//0</span></span><br><span class="line">alert(matches[<span class="number">0</span>]);      <span class="comment">//cat</span></span><br><span class="line">alert(matches.lastIndex);<span class="comment">//3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> matches = pattern2.exec(text);</span><br><span class="line">alert(matches.index);   <span class="comment">//5</span></span><br><span class="line">alert(matches[<span class="number">0</span>]);      <span class="comment">//bat</span></span><br><span class="line">alert(matches.lastIndex);<span class="comment">//8</span></span><br></pre></td></tr></table></figure><br>第二个方法是test()，接收一个字符串参数。在模式与该参数匹配的情况下返回true。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">&quot;000-00-0000&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/\d&#123;3&#125;-\d&#123;2&#125;-\d&#123;4&#125;/</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(pattern.test(text))&#123;</span><br><span class="line">    alert(<span class="string">&quot;这个模式匹配&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="RegExp构造函数属性"><a href="#RegExp构造函数属性" class="headerlink" title="RegExp构造函数属性"></a>RegExp构造函数属性</h2><table>
+<thead>
+<tr>
+<th>长属性名</th>
+<th>短属性名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>input</td>
+<td>$_</td>
+<td>最近一次要匹配的字符串</td>
+</tr>
+<tr>
+<td>lastMatch</td>
+<td>$&amp;</td>
+<td>最近一次的匹配项</td>
+</tr>
+<tr>
+<td>lastParen</td>
+<td>$+</td>
+<td>最近一次匹配的捕获组</td>
+</tr>
+<tr>
+<td>leftContext</td>
+<td>$`</td>
+<td>input字符串中lastMatch之前的文本</td>
+</tr>
+<tr>
+<td>multiline</td>
+<td>$*</td>
+<td>布尔值，表示是否所有表达式都是用多行模式。</td>
+</tr>
+<tr>
+<td>rightContext</td>
+<td>$’</td>
+<td>Input字符串种lastMatch之后的文本</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">&quot;this has been a short summer&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/(.)hort/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(pattern.text(text))&#123;</span><br><span class="line">    alert(<span class="built_in">RegExp</span>.input);        <span class="comment">//this has been a short summer</span></span><br><span class="line">    alert(<span class="built_in">RegExp</span>.leftContext);  <span class="comment">//this has been a</span></span><br><span class="line">    alert(<span class="built_in">RegExp</span>.rightContext); <span class="comment">//summer</span></span><br><span class="line">    alert(<span class="built_in">RegExp</span>.lastMatch);    <span class="comment">//short</span></span><br><span class="line">    alert(<span class="built_in">RegExp</span>.lastParen);    <span class="comment">//s</span></span><br><span class="line">    alert(<span class="built_in">RegExp</span>.multiline);    <span class="comment">//false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Function类型"><a href="#Function类型" class="headerlink" title="Function类型"></a>Function类型</h1><p>每个函数都是Function类型的实例，而且都与其他引用类型一样具有属性和方法。</p>
+<p><strong>函数是对象，函数名是指针</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">&quot;num1&quot;</span>, <span class="string">&quot;num2&quot;</span>, <span class="string">&quot;return num1 + num2&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//这三者定义函数的方式一样</span></span><br></pre></td></tr></table></figure>
+<p>第三种方法不推荐使用，会导致解析两次代码。</p>
+<h2 id="没有重载"><a href="#没有重载" class="headerlink" title="没有重载"></a>没有重载</h2><p>由于变量名类似指针，所以ECMAScript中没有函数重载的概念。</p>
+<h2 id="函数声明和函数表达式"><a href="#函数声明和函数表达式" class="headerlink" title="函数声明和函数表达式"></a>函数声明和函数表达式</h2><ul>
+<li>函数声明会被解析器率先读取，在执行任何代码之前可用</li>
+<li>函数表达式必须等到解析器执行到它所在的代码行才回真正被执行。</li>
+</ul>
+<p>函数声明提升(function declaration hoisting)会读取并将函数声明添加到执行环境中。</p>
+<h2 id="作为值的函数"><a href="#作为值的函数" class="headerlink" title="作为值的函数"></a>作为值的函数</h2><p>函数可以作为值来使用。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComparisonFunction</span>(<span class="params">propertyName</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">object1, object2</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> value1 = object1[propertyName];</span><br><span class="line">        <span class="keyword">var</span> value2 = object2[propertyName];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(value1 &lt; value2)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1 &gt; value2)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> data = [&#123;<span class="attr">name</span>: <span class="string">&quot;Zachary&quot;</span>, <span class="attr">age</span>: <span class="number">28</span>&#125;,&#123;<span class="attr">name</span>: <span class="string">&quot;Nicholas&quot;</span>, <span class="attr">age</span>: <span class="number">29</span>&#125;];</span><br><span class="line">data.sort(createComparisonFunction(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">alert(data[<span class="number">0</span>].name);    <span class="comment">//Nicholas</span></span><br><span class="line"></span><br><span class="line">data.sort(createComparisonFunction(<span class="string">&quot;age&quot;</span>));</span><br><span class="line">alert(date[<span class="number">0</span>].name);    <span class="comment">//Zachary</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="函数内部属性"><a href="#函数内部属性" class="headerlink" title="函数内部属性"></a>函数内部属性</h2><ul>
+<li>arguments </li>
+</ul>
+<p>包含着传入函数中的所有属性这个对象还拥有一个callee的属性，指针指向arguments对象的函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (num &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * factorial(num - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个函数的执行与函数名factorial耦合在一起</span></span><br><span class="line"><span class="comment">//可以使用arguments.callee来消除耦合</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (num &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * <span class="built_in">arguments</span>.callee(num - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>this </li>
+</ul>
+<p>引用的是函数据以执行的环境对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">&quot;red&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> o = &#123;<span class="attr">color</span>: <span class="string">&quot;blue&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="built_in">this</span>.color);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor();     <span class="comment">//&quot;red&quot;</span></span><br><span class="line"></span><br><span class="line">o.sayColor = sayColor;</span><br><span class="line">o.sayColor();   <span class="comment">//&quot;blue&quot;</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>caller</li>
+</ul>
+<p>保存这调用当前属性函数的引用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    inner();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(inner.caller);</span><br><span class="line">    <span class="comment">//也可以使用arguments.callee.caller</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">outer();</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h3 id="函数属性和方法"><a href="#函数属性和方法" class="headerlink" title="函数属性和方法"></a>函数属性和方法</h3><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><p>ECMAScript中函数是对象，函数有属性和方法。</p>
+<ul>
+<li>lenth属性表示函数希望接收的命名参数的个数<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayName</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    alert(name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">&quot;Hi&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(sayName.length);      <span class="comment">//1</span></span><br><span class="line">alert(sum.length);          <span class="comment">//2</span></span><br><span class="line">alert(sayHi.length);        <span class="comment">//0</span></span><br></pre></td></tr></table></figure></li>
+<li>prototype属性是保存所有实例方法的真正所在。在ECMAScript5中，prototype属性是不可枚举的，无法使用for-in发现。</li>
+</ul>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>apply()和call()。两个方法的用途都是<strong>在特定的作用域中调用函数</strong>，实际上等于设置函数体内this对象的值。</p>
+<p>apply()方法接收两个参数：一个是在其中运行函数的作用域，另一个是参数数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSum1</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> sum.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSum2</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> sum.apply(<span class="built_in">this</span>, [num1, num2]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(callSum1(<span class="number">10</span>,<span class="number">10</span>)); <span class="comment">//20</span></span><br><span class="line">alert(callSum2(<span class="number">10</span>,<span class="number">10</span>)); <span class="comment">//20</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><br>call()方法与apply方法的作用相同，区别仅在于接收参数的方式不同。<br>在使用call()方法时，传递给函数的参数必须逐个列举出来。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSum</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> call(<span class="built_in">this</span>, num1, num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(callSum(<span class="number">10</span>,<span class="number">10</span>));  <span class="comment">//20</span></span><br></pre></td></tr></table></figure><br>apply()与call()的真正作用是扩充函数赖以运行的作用域。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">&quot;red&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> o = &#123;<span class="attr">color</span>: <span class="string">&quot;blue&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="built_in">this</span>.color);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor();             <span class="comment">//red</span></span><br><span class="line">sayColor.call(<span class="built_in">this</span>);    <span class="comment">//red</span></span><br><span class="line">sayColor.call(<span class="built_in">window</span>);  <span class="comment">//red</span></span><br><span class="line">sayColor.call(o);       <span class="comment">//blue</span></span><br></pre></td></tr></table></figure>
+<p>ECMAScript5还定义了一个bind()方法，这个方法会创建一个函数的实例，this值会被绑定到传给bind()函数的值。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">&quot;red&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> o = &#123; <span class="attr">color</span>: <span class="string">&quot;blue&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="built_in">this</span>.color);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> objectSayColor = sayColor.bind(o);</span><br><span class="line">objectSayColor();<span class="comment">//blue</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="基本包装类型"><a href="#基本包装类型" class="headerlink" title="基本包装类型"></a>基本包装类型</h1><p>ECMAString提供了3个特殊的引用类型：Boolean、Number、String。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="string">&quot;some text&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> s2 = s1.substring(<span class="number">2</span>);</span><br></pre></td></tr></table></figure><br>当第二行代码访问s1时，访问过程处于一种读取模式，也就是要从内存中读取这个字符串的值，后台都会自动完成下列处理。</p>
+<ol>
+<li>创建string类型的一个实例</li>
+<li>在实例上调用指定的方法</li>
+<li>销毁这个实例<br>以上三个步骤想象成执行了下列ECMAString代码<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">&quot;some text&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> s2 = s1.substring(<span class="number">2</span>);</span><br><span class="line">s1 = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+此番处理，基本的字符串值就变得跟对象一样了。</li>
+</ol>
+<p>引用类型与基本包装类型的<strong>主要区别</strong>就是对象的生存期。使用new操作符创建的引用类型的实例，在执行流离开当前作用域之前都一直保存在内存种。而自动创建的基本包装类型的对象，则只存在于一行代码执行的瞬间，然后立即被销毁。这意味着我们不能在运行时为基本类型添加属性和方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="string">&quot;some text&quot;</span>;</span><br><span class="line">s1.color = <span class="string">&quot;red&quot;</span>;</span><br><span class="line">alert(s1.color);    <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure><br>用new调用基本包装类型的构造函数，与调用同名的转型函数是不一样的。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> value = <span class="string">&quot;25&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> number = <span class="built_in">Number</span>(value);     <span class="comment">//转型函数</span></span><br><span class="line">alert(<span class="keyword">typeof</span> number);           <span class="comment">//number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Number</span>(value);    <span class="comment">//构造函数</span></span><br><span class="line">alert(<span class="keyword">typeof</span> obj);              <span class="comment">//object</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h2><p>Boolean对象在ECMAScript中用处不大，需要注意的是，布尔表达式种的所有对象都会被转化为true，于是会有下列情况出现。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> falseObject = <span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="keyword">var</span> result = falseObject &amp;&amp; <span class="literal">true</span>;</span><br><span class="line">alert(result);  <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> falseValue = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">var</span> result = falseValue &amp;&amp; <span class="literal">true</span>;</span><br><span class="line">alert(result);  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line">alert(<span class="keyword">typeof</span> falseObject);  <span class="comment">//object</span></span><br><span class="line">alert(<span class="keyword">typeof</span> falseValue);   <span class="comment">//boolean</span></span><br><span class="line">alert(falseObject <span class="keyword">instanceof</span> <span class="built_in">Boolean</span>);  <span class="comment">//true</span></span><br><span class="line">alert(falseValue <span class="keyword">instanceof</span> <span class="built_in">Boolean</span>);   <span class="comment">//false</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h3><p>toFixed()方法会按照指定的小数位返回数值的字符串表示。</p>
+<p>toExponential()方法会返回以指数表示法表示的数值的字符串形式。</p>
+<p>如果得到某个数值最合适的格式，应该使用toPrecison()方法。可以接收一个参数，表示数值的所有数字的位数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">99</span>;</span><br><span class="line">alert(num.toPrecision(<span class="number">1</span>));<span class="comment">//1e+2</span></span><br><span class="line">alert(num.toPrecision(<span class="number">2</span>));<span class="comment">//99</span></span><br><span class="line">alert(num.toPrecision(<span class="number">3</span>));<span class="comment">//99.0</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h3><ol>
+<li>字符方法</li>
+</ol>
+<p>charAt()和charCodeAt()<br>分别是以单字符字符串的形式返回给定位置的那个字符（ECMAScript没有字符类型）和返回给定位置的字符编码。</p>
+<ol start="2">
+<li>字符串操作方法</li>
+</ol>
+<p>concat()用于将一或多个字符串拼接起来，返回拼接得到的新字符串。在实践过程中，使用的更多的是<code>+</code>加号操作符。</p>
+<p>操作子字符串：slice()、substr()、substring()<br>方法|第一个参数|第二个参数|<br>–|–|–<br>slice|开始位置|子字符串最后一个字符后面的位置<br>substr|开始位置|返回字符的个数<br>substring|开始位置|子字符串最后一个字符后面的位置</p>
+<p>如果是负数<br>方法|第一个参数|第二个参数|<br>–|–|–<br>slice|负值与字符串长度相加|赋值与字符串相加<br>substr|负值与字符串长度相加|转换为0，返回空字符串<br>substring|负值转换为0，返回整个字符串|第二个负值转换为0，数字小的放第一个参数</p>
+<ol start="3">
+<li>字符串位置方法<br>indexOf()和lastIndex()方法，第二个参数接收表示从字符串种哪个位置开始搜索。</li>
+</ol>
+<p>可以循环调用以上两个方法来找到所有匹配的子字符串。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> stringValue = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> positions = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br><span class="line"><span class="keyword">var</span> pos = stringValue.indexOf(<span class="string">&quot;e&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(pos &gt; <span class="number">-1</span>)&#123;</span><br><span class="line">    positions.push(pos);</span><br><span class="line">    pos = string.Value.indexOf(<span class="string">&quot;e&quot;</span>, pos + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(positions);<span class="comment">//3,24,32,35,52</span></span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li>trim()方法<br>创建一个字符串副本，删除前置及后缀的所有空格，然后返回结果。</li>
+<li>字符串大小写转换方法<br>toLowerCase()、toUpperCase();</li>
+<li>字符串的模式匹配方法<br>match()本质上与调用RegExp的exec()方法相同。只接受一个参数，要么是正则表达式，要么是RegExp对象。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">&quot;cat, bat, sat, fat&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/.at/</span>;</span><br><span class="line"><span class="keyword">var</span> matches = text.match(pattern);</span><br><span class="line">alert(matches.index);   <span class="comment">//0</span></span><br><span class="line">alert(matches[<span class="number">0</span>]);      <span class="comment">//&quot;cat&quot;</span></span><br><span class="line">alert(matches.lastIndex);<span class="comment">//0</span></span><br></pre></td></tr></table></figure>
+search()返回字符串第一个匹配项的索引，如果没有返回-1。<br>replace()接收两个参数，第一个参数可以是一个RedExp对象或者一个字符串，第二个参数可以是一个字符串或者一个函数、<br>第二个参数可以使用一些特殊的字符序列<br>字符序列|替换文本<br>–|–<br>$$|$<br>$&amp;|匹配整个模式的子字符串。与RegExp.lastMatch的值相同<br>$’|匹配的字符串之前的子字符串。与RegExp.leftContext的值相同<br>$`|匹配的字符串之后的子字符串。与RegExp.rightContext的值相同<br>$n或者$nn|匹配第n个或者第nn个捕获组的子字符串。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">&quot;cat, bat, sat, fat&quot;</span>;</span><br><span class="line">result = text.replace(<span class="regexp">/(.at)/g</span>, <span class="string">&quot;word($1)&quot;</span>);</span><br><span class="line"></span><br><span class="line">alert(result);<span class="comment">//word(cat), word(bat), word(sat), word(fat)</span></span><br></pre></td></tr></table></figure>
+<p>replace()方法的第二个参数也可以是一个函数。会向这个函数传递三个参数：模式的匹配项、模式匹配项在字符串中的位置和原始字符串。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">htmlEscape</span>(<span class="params">text</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> text.replace(<span class="regexp">/[&lt;&gt;&quot;&amp;]/g</span>,<span class="function"><span class="keyword">function</span>(<span class="params">match, pos, originalText</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">switch</span>(match)&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;&lt;&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;&amp;lt;&quot;</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;&gt;&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;&amp;gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;&amp;&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;&amp;amp;&quot;</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;\&quot;&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;&amp;quot;&quot;</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">alert(htmlEscape(<span class="string">&quot;&lt;p class=\&quot;greeting\&quot;&gt;Hello world!&lt;/p&gt;&quot;</span>));</span><br><span class="line"><span class="comment">//&amp;lt;p class=&amp;quot;greeting&amp;quot;&amp;gt;Hello world!&amp;lt;/p&amp;gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>split()可以基于指定的分隔符将一个字符串分割成多个子字符串，第一个参数可以是字符串也可以是RegExp对象，第二个参数可选，指定数组的大小。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colorText = <span class="string">&quot;red,blue,green,yellow&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> colors1 = colorText.split(<span class="string">&quot;,&quot;</span>);<span class="comment">//[&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;, &quot;yellow&quot;]</span></span><br><span class="line"><span class="keyword">var</span> colors2 = colorText.split(<span class="string">&quot;,&quot;</span>,<span class="number">2</span>);<span class="comment">//[&quot;red&quot;, &quot;blue&quot;]</span></span><br><span class="line"><span class="keyword">var</span> colors3 = colorText.split(<span class="regexp">/[^\,]+/</span>);<span class="comment">//[&quot;&quot;, &quot;,&quot;, &quot;,&quot;, &quot;,&quot;, &quot;&quot;]</span></span><br></pre></td></tr></table></figure><br>最后一次调用会出现第一项和最后一项是两个空字符串，是因为正则表达式指定的分隔符出现在了字符串的开头(“red”)和末尾(“yellow”)。</p>
+<ol start="7">
+<li>localCompare()方法</li>
+</ol>
+<p>比较两个字符串，并按照字母表顺序返回。</p>
+<ul>
+<li>字符串在字母表种应该排在字符串参数之前，返回一个负数(-1)</li>
+<li>等于返回0</li>
+<li>字符串在字母表种应该排在字符串参数之后，返回一个负数(1)</li>
+</ul>
+<ol start="8">
+<li>fromCharCode()方法</li>
+</ol>
+<p>接收一个或多个字符编码然后转换成一个字符串。</p>
+<ol start="9">
+<li>html方法</li>
+</ol>
+<h1 id="单体内置对象"><a href="#单体内置对象" class="headerlink" title="单体内置对象"></a>单体内置对象</h1><p>定义：由ECMAScript实现提供的、不依赖于宿主环境的对象，这些对象在ECMAScript程序执行之前就已经存在了。例如Object、Array和String。</p>
+<h2 id="Global对象"><a href="#Global对象" class="headerlink" title="Global对象"></a>Global对象</h2><h3 id="URI编码方法"><a href="#URI编码方法" class="headerlink" title="URI编码方法"></a>URI编码方法</h3><p>encodeURI()和encodeURIComponent()可以对URI(Uniform Resource Identifiers,通用资源标识符)进行编码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> uri = <span class="string">&quot;http://www.wrox.com/illegal value.htm#start&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">encodeURI</span>(uri));</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">encodeURIComponent</span>(uri));</span><br><span class="line"><span class="comment">//http://www.wrox.com/illegal%20value.htm#start</span></span><br><span class="line"><span class="comment">//http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.htm%23start</span></span><br></pre></td></tr></table></figure><br>前者只有空格被替换成了%20，后者替换所有非字母数字字符。</p>
+<p>与前面两者对应的是decodeURI()和decodeURIComponent()</p>
+<h3 id="eval-方法"><a href="#eval-方法" class="headerlink" title="eval()方法"></a>eval()方法</h3><p>它只接受一个参数，即要执行的ECMAScript</p>
+<h3 id="Global对象的属性"><a href="#Global对象的属性" class="headerlink" title="Global对象的属性"></a>Global对象的属性</h3><p>例如undefined、NaN和Infinity。此外所有原生引用类型的构造函数，像Object和Function，也都是Global对象的属性。</p>
+<h3 id="window对象"><a href="#window对象" class="headerlink" title="window对象"></a>window对象</h3><p>在全局作用域中声明的所有变量和函数，都成为了window对象的属性。<br>取得Global对象的方法是使用以下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">global</span> = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure></p>
+<h2 id="Math对象"><a href="#Math对象" class="headerlink" title="Math对象"></a>Math对象</h2><ol>
+<li>Math对象的属性</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Math.e</td>
+<td>常量e的值</td>
+</tr>
+<tr>
+<td>Math.LN10</td>
+<td>10的自然对数</td>
+</tr>
+<tr>
+<td>Math.LN2</td>
+<td>2的自然对数</td>
+</tr>
+<tr>
+<td>Math.LOG2E</td>
+<td>以2为底e的对数</td>
+</tr>
+<tr>
+<td>Math.LOG10E</td>
+<td>以10为底e的对数</td>
+</tr>
+<tr>
+<td>Math.PI</td>
+<td>π的值</td>
+</tr>
+<tr>
+<td>Math.SQRT1_2</td>
+<td>1/2的平方根</td>
+</tr>
+<tr>
+<td>Math.SQRT2</td>
+<td>2的平方根</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>min()和max()方法</li>
+</ol>
+<p>确定一组数值种的最小值和最大值，可以接收任意多个数值参数。<br>如果要找到数组中的最大或最小值，可以使用apply()方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];</span><br><span class="line"><span class="keyword">var</span> max = <span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>, values);</span><br><span class="line"><span class="comment">//max = 8</span></span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>舍入方法</li>
+</ol>
+<ul>
+<li>Math.ceil()向上舍入</li>
+<li>Math.floor()向下舍入</li>
+<li>Math.round()标准舍入</li>
+</ul>
+<ol start="4">
+<li>random()方法</li>
+</ol>
+<p>Math.random()方法返回大于等于0小于1的随机数。</p>
+<p><code>值 = Math.floor(Math.random() * 可能值的总数 + 第一个可能的值</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectFrom</span>(<span class="params">lowerValue, upperValue</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> choices = upperValue - lowerValue + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * choices + lowerValue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol start="5">
+<li>其他方法</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Math.abs(num)</td>
+<td>num绝对值</td>
+<td>Math.asin(x)</td>
+<td>反正弦</td>
+</tr>
+<tr>
+<td>Math.exp(num)</td>
+<td>e的num次幂</td>
+<td>Math.atan(x)</td>
+<td>反正切</td>
+</tr>
+<tr>
+<td>Math.log(num)</td>
+<td>num的自然对数</td>
+<td>Math.atan2(y,x)</td>
+<td>y/x的反正切值</td>
+</tr>
+<tr>
+<td>Math.pow(num,power)</td>
+<td>num的powerci 幂</td>
+<td>Math.cos(x)</td>
+<td>x的余弦值</td>
+</tr>
+<tr>
+<td>Math.sqrt(num)</td>
+<td>num的平方根</td>
+<td>Math.sin(x)</td>
+<td>x的正弦值</td>
+</tr>
+<tr>
+<td>Math.acos(x)</td>
+<td>x的反余弦值</td>
+<td>Math.tan(x)</td>
+<td>x的正切</td>
+</tr>
+</tbody>
+</table>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对象在JavaScript中被称为引用类型的值。</p>
+<ul>
+<li>引用类型与传统面向对象程序设计中的类相似，但实现不同。</li>
+<li>Object是一个基础类型，其他所有类型都从Object继承了基本行为</li>
+<li>Array类型是一组值的有序列表，同事提供了操作和转换这些值的功能</li>
+<li>Date类型提供了有关日期和时间的信息，包括当前日期和时间以及相关的计算功能</li>
+<li>RegExp是ECMAScript支持正则表达式的一个窗口</li>
+</ul>
+<p>函数实际上是Function类型的实例，因此函数也是对象。</p>
+<p>在所有代码执行之前，作用域种就已经存在两个内置对象：Global和Math，大多数ECMAScript实现中都不能直接访问Global对象的属性。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
+              <a href="/tags/js%E9%AB%98%E7%A8%8B/" rel="tag"># js高程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/07/25/287/" rel="prev" title="js高程读书笔记 第三章 基本概念">
+                  <i class="fa fa-chevron-left"></i> js高程读书笔记 第三章 基本概念
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/08/04/291/" rel="next" title="VIM简单操作笔记">
+                  VIM简单操作笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">何米酥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>
