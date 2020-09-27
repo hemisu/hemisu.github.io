@@ -24,7 +24,7 @@ categories: 前端
 
 ### Demo介绍
 
-视频[1]从开头介绍了整个项目的大体内容，位于 `src` 文件中：项目以 `React` 作为示范，引入一个异步懒加载组件（`lazy component`）展示到根组件中。
+视频[1](https://www.youtube.com/watch?v=UNMkLHzofQI)从开头介绍了整个项目的大体内容，位于 `src` 文件中：项目以 `React` 作为示范，引入一个异步懒加载组件（`lazy component`）展示到根组件中。
 
 项目目录如下：
 
