@@ -10,6 +10,7 @@ categories: 前端
 
 为了更好地理解模块打包工具背后的理念，以及在底层它们是如何运作的，在观看 Tobias Koppers 放在油管的视频后整理本文，后续将录制视频帮助理解，demo地址将在底部放出。
 
+- [Demo介绍](#demo介绍)
 - [手动模拟打包流程](#手动模拟打包流程)
   - [第一步：生成模块依赖图 （module-graph）](#第一步生成模块依赖图-module-graph)
   - [第二步：生成区块图（chunk graph）](#第二步生成区块图chunk-graph)
@@ -22,7 +23,7 @@ categories: 前端
 - [参考链接](#参考链接)
 
 
-### Demo介绍
+## Demo介绍
 
 视频[1](https://www.youtube.com/watch?v=UNMkLHzofQI)从开头介绍了整个项目的大体内容，位于 `src` 文件中：项目以 `React` 作为示范，引入一个异步懒加载组件（`lazy component`）展示到根组件中。
 
@@ -50,7 +51,7 @@ categories: 前端
 
 安装完依赖之后，我们可以先执行一波 `yarn webpack --display-modules` 查看 `webpack` 打包后的结果
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4179ee38-8436-4567-a161-c2d6e5a97035/Untitled.png](1.png)
+![image](1.png)
 
 使用 webpack —display-modules 查看打包结果
 

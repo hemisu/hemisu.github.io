@@ -8,7 +8,9 @@ subtitle: EFE
 description: Just do...
 keywords: web, 前端, 生活, 分享
 author: 何米酥
-language: zh-Hans
+language: 
+- zh-CN
+- en
 timezone:
 
 # URL
@@ -32,7 +34,7 @@ skip_render: demo/**/*
 new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
-external_link: true # Open external links in new tab
+# external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: true

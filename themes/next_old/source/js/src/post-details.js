@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   var html = $('html');
-  var TAB_ANIMATE_DURATION = 200;
+  var TAB_ANIMATE_DURATION = 50;
   var hasVelocity = $.isFunction(html.velocity);
 
   $('.sidebar-nav li').on('click', function () {
