@@ -1,7 +1,9 @@
 ---
 title: js异步初探 - 图解并发控制
 date: 2020-06-20 01:57:31
-tags:
+categories: 前端
+tags: 
+  - js
 ---
 
 ## 前言

@@ -8,7 +8,7 @@ type: about
 
 - 年龄： 23
 
-![](http://wx4.sinaimg.cn/large/98fa4058gy1fpvsz7tzo5j21kw16o1l0.jpg)
+![](http://wx4.sinaimg.cn/large/98fa4058gy1fpvsz7tzo5j21kw16o1l0.jpg x500)
 
 [2017年7月2日更新]
 
