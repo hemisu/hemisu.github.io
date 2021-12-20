@@ -256,6 +256,7 @@ a:focus {
 
 .wrapper-col-2 .blog-post {
   flex: 1;  
+  max-width: 800px;
 }
 
 .wrapper-col-2 .aside-content {
