@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/9/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"29ce89a9-c9fb-5345-87f8-6f8664bbea8f","excerpt":"将127.0.0.1 share.baidu.com\n加入入hosts文件后命令行敲ipconfig /flushdns","html":"<p>将127.0.0.1 share.baidu.com\n加入入hosts文件后命令行敲ipconfig /flushdns</p>","tableOfContents":"","frontmatter":{"title":"火狐标签关闭时卡顿问题","date":"July 01, 2015","description":null}},"previous":{"fields":{"slug":"/new-beginnings/"},"frontmatter":{"title":"New Beginnings"}},"next":{"fields":{"slug":"/old-posts/11/"},"frontmatter":{"title":"Wish list"}}},"pageContext":{"id":"29ce89a9-c9fb-5345-87f8-6f8664bbea8f","previousPostId":"5d97e33d-3441-5077-a2ac-ba06624557c7","nextPostId":"4dd3121f-bd56-52c1-95af-c51e89cd50d6"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/11/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"4dd3121f-bd56-52c1-95af-c51e89cd50d6","excerpt":"Bluelounge Kickflip","html":"<p>Bluelounge Kickflip</p>","tableOfContents":"","frontmatter":{"title":"Wish list","date":"July 30, 2015","description":null}},"previous":{"fields":{"slug":"/old-posts/9/"},"frontmatter":{"title":"火狐标签关闭时卡顿问题"}},"next":{"fields":{"slug":"/old-posts/15/"},"frontmatter":{"title":"post checkbox默认值"}}},"pageContext":{"id":"4dd3121f-bd56-52c1-95af-c51e89cd50d6","previousPostId":"29ce89a9-c9fb-5345-87f8-6f8664bbea8f","nextPostId":"8cba1818-3e90-5928-9db0-004eadc04c21"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

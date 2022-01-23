@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/152/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"cc09d02d-3368-54d2-8bbf-871a3beae888","excerpt":"[paste.ubuntu.com/23987628][1] [1]: http://paste.ubuntu.com/23987628","html":"<p>[paste.ubuntu.com/23987628][1] [1]: <a href=\"http://paste.ubuntu.com/23987628\">http://paste.ubuntu.com/23987628</a></p>","tableOfContents":"","frontmatter":{"title":"浙大提前查分","date":"February 13, 2017","description":null}},"previous":{"fields":{"slug":"/old-posts/151/"},"frontmatter":{"title":"PAT B1045/A1101"}},"next":{"fields":{"slug":"/old-posts/153/"},"frontmatter":{"title":"PAT B1019/A1069"}}},"pageContext":{"id":"cc09d02d-3368-54d2-8bbf-871a3beae888","previousPostId":"db3fc26e-6c61-54f9-a4f1-a763e9abba86","nextPostId":"cb2fe237-9c2d-535f-ab4b-076fac44f872"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

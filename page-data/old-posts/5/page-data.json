@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/5/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"997be9da-a563-5526-881e-559a38990074","excerpt":"该上课就去上课，想逃课也可以逃课； 该吃饭就去吃饭，想打球就去打球。\n想谈恋爱就去谈，没合适的就单着。\n该学习就学习，该聊天就聊天。\n爱睡懒觉就睡懒觉，决定早起就早起。 感觉还是少了几条","html":"<blockquote>\n<p>该上课就去上课，想逃课也可以逃课；</p>\n</blockquote>\n<p>该吃饭就去吃饭，想打球就去打球。\n想谈恋爱就去谈，没合适的就单着。\n该学习就学习，该聊天就聊天。\n爱睡懒觉就睡懒觉，决定早起就早起。</p>\n<p>感觉还是少了几条</p>","tableOfContents":"","frontmatter":{"title":"引用知乎：大学生活的优雅","date":"March 25, 2015","description":null}},"previous":{"fields":{"slug":"/old-posts/start/"},"frontmatter":{"title":"欢迎使用 Typecho"}},"next":{"fields":{"slug":"/old-posts/6/"},"frontmatter":{"title":"【脑洞】如果有另外十个你"}}},"pageContext":{"id":"997be9da-a563-5526-881e-559a38990074","previousPostId":"a16b832a-6fe8-500b-ab21-d56023055e02","nextPostId":"f04e36bc-05c2-5bcb-a454-3142cc94fc83"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

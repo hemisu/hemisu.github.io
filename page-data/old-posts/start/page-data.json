@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/start/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"a16b832a-6fe8-500b-ab21-d56023055e02","excerpt":"如果您看到这篇文章,表示您的 blog 已经安装成功.","html":"<p>如果您看到这篇文章,表示您的 blog 已经安装成功.</p>","tableOfContents":"","frontmatter":{"title":"欢迎使用 Typecho","date":"March 21, 2015","description":null}},"previous":null,"next":{"fields":{"slug":"/old-posts/5/"},"frontmatter":{"title":"引用知乎：大学生活的优雅"}}},"pageContext":{"id":"a16b832a-6fe8-500b-ab21-d56023055e02","previousPostId":null,"nextPostId":"997be9da-a563-5526-881e-559a38990074"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

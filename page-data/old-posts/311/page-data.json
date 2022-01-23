@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/311/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"e92e5295-91cc-5aab-b464-84fa9231b545","excerpt":"将路由器的5G Wi-Fi（802.11ac）的配置按如下设置\n频道：157\n带宽：40Mhz 应该适用于2012mid款的其他系列，帮助连接5G频段，减少2.4Ghz频道的干扰","html":"<p>将路由器的5G Wi-Fi（802.11ac）的配置按如下设置\n频道：157\n带宽：40Mhz</p>\n<p>应该适用于2012mid款的其他系列，帮助连接5G频段，减少2.4Ghz频道的干扰</p>","tableOfContents":"","frontmatter":{"title":"关于MacBook 15 MD103 连接wifi_5G的问题","date":"November 07, 2017","description":null}},"previous":{"fields":{"slug":"/old-posts/310/"},"frontmatter":{"title":"js高程读书笔记 第22章 高级技巧"}},"next":{"fields":{"slug":"/old-posts/2017-12-23css practice/"},"frontmatter":{"title":"css练习一则"}}},"pageContext":{"id":"e92e5295-91cc-5aab-b464-84fa9231b545","previousPostId":"6f725146-d320-5ac3-a79c-9f397830b5a9","nextPostId":"f6a717e7-6d1a-56a3-838a-f272d1e52f93"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

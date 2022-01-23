@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/317/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"e2f02c15-1920-5224-8c60-cc304cfa4610","excerpt":"http://www.hemisu.com/demo/CMPAPP/homework1","html":"<p><a href=\"http://www.hemisu.com/demo/CMPAPP/homework1\">http://www.hemisu.com/demo/CMPAPP/homework1</a></p>","tableOfContents":"","frontmatter":{"title":"canvas实践 画板","date":"February 12, 2018","description":null}},"previous":{"fields":{"slug":"/old-posts/312/"},"frontmatter":{"title":"css练习一则"}},"next":{"fields":{"slug":"/old-posts/hello-world/"},"frontmatter":{"title":"Hello Hexo"}}},"pageContext":{"id":"e2f02c15-1920-5224-8c60-cc304cfa4610","previousPostId":"6c89d111-d212-52a2-b002-89fb189045b3","nextPostId":"3b232462-2e9c-5e64-a2f5-b12e60a541c1"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}

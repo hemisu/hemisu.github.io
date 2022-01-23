@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-blog-post-js",
+    "path": "/old-posts/24/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"何米酥`s Blog"}},"markdownRemark":{"id":"e00efe03-a472-5614-a220-12213e4853d3","excerpt":"洗牙\n英语 唐迟基础阅读 + 老版恋恋有词\n政治 阮晔 + 精讲精练 + 肖1000\n专业课 操作系统\n数学 概率9讲-第2讲","html":"<p>洗牙\n英语 唐迟基础阅读 + 老版恋恋有词\n政治 阮晔 + 精讲精练 + 肖1000\n专业课 操作系统\n数学 概率9讲-第2讲</p>","tableOfContents":"","frontmatter":{"title":"2016年9月4日","date":"September 04, 2016","description":null}},"previous":{"fields":{"slug":"/old-posts/15/"},"frontmatter":{"title":"post checkbox默认值"}},"next":{"fields":{"slug":"/old-posts/32/"},"frontmatter":{"title":"PAT B1036"}}},"pageContext":{"id":"e00efe03-a472-5614-a220-12213e4853d3","previousPostId":"8cba1818-3e90-5928-9db0-004eadc04c21","nextPostId":"45358b1c-b209-5051-959d-0cf615ed3fb5"}},
+    "staticQueryHashes": ["2841359383","3257411868"]}
