@@ -325,6 +325,9 @@ a:focus {
   font-family: var(--font-heading);
 }
 
+.blog-post img {
+  max-width: 780px;
+}
 .blog-post-nav ul {
   margin: var(--spacing-0);
 }
